@@ -1,0 +1,3 @@
+C:/Users/Manuel/CLionProjects/practica1-pag/cmake-build-debug/CMakeFiles/PruebaGraficas.dir
+C:/Users/Manuel/CLionProjects/practica1-pag/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Manuel/CLionProjects/practica1-pag/cmake-build-debug/CMakeFiles/rebuild_cache.dir
