@@ -1,0 +1,47 @@
+# Archivos y carpetas generados por CMake
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/Makefile
+/compile_commands.json
+cmake-build-debug/
+# Directorios de build
+/build/
+/out/
+/bin/
+/lib/
+venv/
+# Archivos de logs y salida
+/*.log
+/*.out
+/*.obj
+/*.o
+/*.a
+/*.lib
+/*.dll
+/*.so
+/*.dylib
+/*.exe
+/*.app
+
+# Archivos de depuración y debugging
+/*.dSYM/
+/*.stackdump
+
+# Archivos temporales y de backups
+*.swp
+*.swo
+*~
+/*.tmp
+
+# Archivos de IDEs
+.vscode/
+/.idea/
+/*.sln
+/*.vcxproj
+/*.vcxproj.filters
+/*.xcodeproj
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
