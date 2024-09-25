@@ -11,7 +11,11 @@ add_executable(PruebaGraficas main.cpp
         Renderer.cpp
         ${IMGUI}
         gui.cpp
-        gui.h)
+        gui.h
+        Consola.cpp
+        Consola.h
+        ColorPicker.cpp
+        ColorPicker.h)
 
 target_link_libraries(PruebaGraficas glad::glad)
 target_link_libraries(PruebaGraficas glfw)

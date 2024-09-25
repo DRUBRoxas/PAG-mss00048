@@ -1,12 +1,11 @@
 #include <iostream>
 // IMPORTANTE: El include de GLAD debe estar siempre ANTES de el de GLFW
-#include <vector>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include "Gui.h"
 #include "Renderer.h"
 #include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
 
 // Esta función callback será llamada cuando GLFW produzca algún error
 void error_callback(int errno, const char *desc) {
@@ -46,9 +45,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 // del ratón sobre el área de dibujo OpenGL.
 void mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
     if (action == GLFW_PRESS) {
-        std::cout << "Pulsado el boton: " << button << std::endl;
+        PAG::Gui::getInstancia().consola->NuevoMensaje("Pulsado el boton: " + std::to_string(button));
     } else if (action == GLFW_RELEASE) {
-        std::cout << "Soltado el boton: " << button << std::endl;
+        PAG::Gui::getInstancia().consola->NuevoMensaje("Soltado el boton: " + std::to_string(button));
     }
 }
 
@@ -62,13 +61,8 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
     const int r = 0 + rand() % 10;
     const int g = 0 + rand() % 10;
     const int b = 0 + rand() % 10;
-    PAG::Renderer::getInstancia().CambiarColorFondo(r / 10.0, g / 10.0, b / 10.0, 1.0);
-    //Cambiar el color de fondo dependiendo de hacia donde se mueva la rueda del raton
-    /*if (yoffset > 0) {
-        glClearColor(r/10.0, g/10.0, b/10.0, 1.0);
-    } else {
-        glClearColor(r/10.0, g/10.0, b/10.0, 1.0);
-    }*/
+    //PAG::Renderer::getInstancia().CambiarColorFondo(r / 10.0, g / 10.0, b / 10.0, 1.0);
+    //PAG::Gui::getInstancia().consola->NuevoMensaje("Movida la rueda del raton. Cambiando color de fondo a" + std::to_string(r) + " " + std::to_string(g) + " " + std::to_string(b));
 }
 
 int main() {
@@ -122,10 +116,10 @@ int main() {
     glfwSetScrollCallback(window, scroll_callback);
 
     // Establecemos el color de fondo de la ventana
-    PAG::Renderer::getInstancia().CambiarColorFondo(0.6, 0.6, 0.6, 1.0);
-
     // Le decimos a OpenGL que tenga en cuenta la profundidad a la hora de dibujar.
     PAG::Renderer::getInstancia().ActivarProfundidad();
+    PAG::Gui::getInstancia().StartGui(window);
+    PAG::Renderer::getInstancia().CambiarColorFondo(0.6, 0.6, 0.6, 1.0);
 
     // Ciclo de eventos de la aplicación. La condición de parada es que la
     // ventana principal deba cerrarse. Por ejemplo, si el usuario pulsa el
@@ -133,17 +127,20 @@ int main() {
     while (!glfwWindowShouldClose(window)) {
         // Borra los buffers (color y profundidad)
         PAG::Renderer::getInstancia().refrescar();
+        PAG::Gui::getInstancia().RefrescarFrame();
         // GLFW usa un doble buffer para que no haya parpadeo. Esta orden
         // intercambia el buffer back (en el que se ha estado dibujando) por el
         // que se mostraba hasta ahora (front).
         glfwSwapBuffers(window);
+
         // Obtiene y organiza los eventos pendientes, tales como pulsaciones de
         // teclas o de ratón, etc. Siempre al final de cada iteración del ciclo
         // de eventos y después de glfwSwapBuffers(window);
         glfwPollEvents();
     }
     // Una vez terminado el ciclo de eventos, liberar recursos, etc.
-    std::cout << "Finishing application pag prueba" << std::endl;
+    PAG::Gui::getInstancia().EndGui();
+    PAG::Gui::getInstancia().consola->NuevoMensaje("Finishing application pag prueba");
     glfwDestroyWindow(window); // Cerramos y destruimos la ventana de la aplicación.
     window = nullptr;
     glfwTerminate(); // Liberamos los recursos que ocupaba GLFW.

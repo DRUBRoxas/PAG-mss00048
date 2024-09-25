@@ -33,7 +33,8 @@ namespace PAG {
         static Renderer &getInstancia();
         void refrescar();
         void ResizeVentana(int ancho, int alto);
-        void CambiarColorFondo(double r, double g, double b, double a);
+
+        std::string CambiarColorFondo(double r, double g, double b, double a);
 
         std::string ObtenerDatos();
         void ActivarProfundidad();

@@ -3,9 +3,7 @@
 //
 
 #include "Renderer.h"
-
 #include <iostream>
-
 namespace PAG {
     Renderer *Renderer::instancia = nullptr;
     //guardamos las coordenadas RGBA del color de fondo
@@ -16,6 +14,10 @@ namespace PAG {
 
     //Destructor
     Renderer::~Renderer() {
+        if (instancia) {
+            delete instancia;
+            instancia = nullptr;
+        }
     }
 
     //Devuelve la dirección de memoria del objeto
@@ -35,12 +37,14 @@ namespace PAG {
         glViewport(0, 0, ancho, alto);
     }
 
-    void Renderer::CambiarColorFondo(double red, double green, double blue, double alpha) {
+    std::string Renderer::CambiarColorFondo(double red, double green, double blue, double alpha) {
         r=red;
         g=green;
         b=blue;
         a=alpha;
         glClearColor(r, g, b, a);
+        std::string confirmacion="Color de fondo cambiado a: R: "+std::to_string(r)+" G: "+std::to_string(g)+" B: "+std::to_string(b)+" A: "+std::to_string(a);
+        return confirmacion;
     }
 
     std::string Renderer::ObtenerDatos() {
