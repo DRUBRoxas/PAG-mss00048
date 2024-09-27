@@ -212,14 +212,4 @@ namespace PAG {
         GL_STATIC_DRAW );
     }
 
-    std::string leerArchivo(const std::string& rutaArchivo) {
-        std::ifstream archivo(rutaArchivo);
-        if (!archivo.is_open()) {
-            throw std::runtime_error("Error al abrir el archivo: " + rutaArchivo);
-        }
-        std::stringstream buffer;
-        buffer << archivo.rdbuf();
-        return buffer.str();
-    }
-
 } // PAG
