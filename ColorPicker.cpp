@@ -15,6 +15,7 @@ namespace PAG {
     }
 
     void ColorPicker::RefrescarColorPicker() {
+        ImGui::SetNextWindowSize(ImVec2(450, 450)); // Ajusta el tamaño de la ventana
         ImGui::Begin("Color Picker");
         static ImVec4 colorAnterior = color;
         if (ImGui::ColorPicker4("Color Picker", (float*)&color, ImGuiColorEditFlags_PickerHueWheel)) {

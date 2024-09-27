@@ -20,9 +20,29 @@ Para implementar un singleton, necesitas:
 * Se proporcione un método estático para obtener la instancia única.
 
 
-![img.png](Assets%2Fimg.png)
+![UMLSingleton.png](Assets/UMLSingleton.png)
 
 Esto puede presentar las siguientes ventajas:
 * Simplicidad en el código.
 * Acceso global controlado.
 * Encapsulamiento.
+
+
+# Practica 2:
+## Ejercicio 1
+La clase PAG::Renderer ha sido completada, se han añadido los siguientes cambios:
+
+![UMLRenderer.png](Assets%2FUMLRenderer.png)
+
+## Ejercicio 2
+Se han sustituido todas las llamadas a openGL en el main por llamadas a PAG::Renderer
+## Ejercicio 3
+Todos los mensajes han sido añadidos a la consola de Dear imgui y para el selector de color
+se ha elegido un ColorPicker4, había varias opciones a elegir, y otras versiones de este mismo,
+he usado esta porque me parece la mas sencilla y la que mejor se adapta a lo que necesitamos.
+Para usarla se ha utilizado la flag:
+```cpp
+ImGuiColorEditFlags_PickerHueWheel
+```
+Hay muchas mas flags que permiten la modificación al gusto del selector del color, pero he decidido
+usar solo esta por ahora.

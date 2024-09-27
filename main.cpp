@@ -10,7 +10,7 @@
 // Esta función callback será llamada cuando GLFW produzca algún error
 void error_callback(int errno, const char *desc) {
     std::string aux(desc);
-    std::cout << "Error de GLFW número " << errno << ": " << aux << std::endl;
+    PAG::Gui::getInstancia().consola->NuevoMensaje("Error de GLFW número " + std::to_string(errno) + ": " + aux);
 }
 
 // Esta función callback será llamada cada vez que el área de dibujo
@@ -22,14 +22,14 @@ void window_refresh_callback(GLFWwindow *window) {
     // que se mostraba hasta ahora front. Debe ser la última orden de
     // este callback
     glfwSwapBuffers(window);
-    std::cout << "Refresh callback called" << std::endl;
+    PAG::Gui::getInstancia().consola->NuevoMensaje("Refresh callback called");
 }
 
 // Esta función callback será llamada cada vez que se cambie el tamaño
 // del área de dibujo OpenGL.
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     PAG::Renderer::getInstancia().ResizeVentana(width, height);
-    std::cout << "Resize callback called" << std::endl;
+    PAG::Gui::getInstancia().consola->NuevoMensaje("Resize callback called");
 }
 
 // Esta función callback será llamada cada vez que se pulse una tecla
@@ -38,7 +38,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
-    std::cout << "Key callback called" << std::endl;
+    PAG::Gui::getInstancia().consola->NuevoMensaje("Key callback called");
 }
 
 // Esta función callback será llamada cada vez que se pulse algún botón
@@ -53,6 +53,7 @@ void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
 
 // Esta función callback será llamada cada vez que se mueva la rueda
 // del ratón sobre el área de dibujo OpenGL.
+//DEPRECATED
 void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
     // std::cout << "Movida la rueda del raton " << xoffset
     //         << " Unidades en horizontal y " << yoffset
@@ -66,12 +67,12 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 }
 
 int main() {
-    std::cout << "Starting Application PAG-Prueba 01" << std::endl;
+    PAG::Gui::getInstancia().consola->NuevoMensaje("Starting Application PAG-Prueba 01");
     //-Este callback hay que registrarlo ANTES de llamar a glfwInit
     glfwSetErrorCallback((GLFWerrorfun) error_callback);
     // Inicializa GLFW. Es un proceso que sólo debe realizarse una vez en la aplicación
     if (glfwInit() != GLFW_TRUE) {
-        std::cout << "Failed to initialize GLFW" << std::endl;
+        PAG::Gui::getInstancia().consola->NuevoMensaje("Failed to initialize GLFW");
         return -1;
     }
     // Definimos las características que queremos que tenga el contexto gráfico
@@ -86,10 +87,10 @@ int main() {
     GLFWwindow *window;
     // Tamaño, título de la ventana, en ventana y no en pantalla completa,
     // sin compartir recursos con otras ventanas.
-    window = glfwCreateWindow(1024, 576, "PAG Introduction", nullptr, nullptr);
+    window = glfwCreateWindow(1600,1400, "PAG Introduction", nullptr, nullptr);
     // Comprobamos si la creación de la ventana ha tenido éxito.
     if (window == nullptr) {
-        std::cout << "Failed to open GLFW window" << std::endl;
+        PAG::Gui::getInstancia().consola->NuevoMensaje("Failed to open GLFW window");
         glfwTerminate(); // Liberamos los recursos que ocupaba GLFW.
         return -2;
     }
@@ -98,7 +99,7 @@ int main() {
     glfwMakeContextCurrent(window);
     // Ahora inicializamos GLAD.
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
-        std::cout << "GLAD initialization failed" << std::endl;
+        PAG::Gui::getInstancia().consola->NuevoMensaje("GLAD initialization failed");
         glfwDestroyWindow(window); // Liberamos los recursos que ocupaba GLFW.
         window = nullptr;
         glfwTerminate();
@@ -106,7 +107,7 @@ int main() {
     }
     // Interrogamos a OpenGL para que nos informe de las propiedades del contexto
     // 3D construido.
-    std::cout << PAG::Renderer::getInstancia().ObtenerDatos() << std::endl;
+    PAG::Gui::getInstancia().consola->NuevoMensaje(PAG::Renderer::getInstancia().ObtenerDatos());
 
     //-Registramos los callbacks que responderán a los eventos principales
     glfwSetWindowRefreshCallback(window, window_refresh_callback);
