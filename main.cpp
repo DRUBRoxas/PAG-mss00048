@@ -45,9 +45,9 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
 // del ratón sobre el área de dibujo OpenGL.
 void mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
     if (action == GLFW_PRESS) {
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Pulsado el boton: " + std::to_string(button));
+        //PAG::Gui::getInstancia().consola->NuevoMensaje("Pulsado el boton: " + std::to_string(button));
     } else if (action == GLFW_RELEASE) {
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Soltado el boton: " + std::to_string(button));
+        //PAG::Gui::getInstancia().consola->NuevoMensaje("Soltado el boton: " + std::to_string(button));
     }
 }
 
@@ -105,33 +105,29 @@ int main() {
         glfwTerminate();
         return -3;
     }
-    // Interrogamos a OpenGL para que nos informe de las propiedades del contexto
-    // 3D construido.
+    // Contexto de la App (para checkar que vaya gucci)
     PAG::Gui::getInstancia().consola->NuevoMensaje(PAG::Renderer::getInstancia().ObtenerDatos());
 
-    //-Registramos los callbacks que responderán a los eventos principales
+    // Registramos los callbacks que responderán a los eventos principales
     glfwSetWindowRefreshCallback(window, window_refresh_callback);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetScrollCallback(window, scroll_callback);
 
-    // Establecemos el color de fondo de la ventana
-    // Le decimos a OpenGL que tenga en cuenta la profundidad a la hora de dibujar.
-    PAG::Renderer::getInstancia().ActivarProfundidad();
+    // Inicializamos OpenGL,imgui y cargamos los shaders
+    PAG::Renderer::getInstancia().inicializaOpenGL();
     PAG::Gui::getInstancia().StartGui(window);
-    PAG::Renderer::getInstancia().CambiarColorFondo(0.6, 0.6, 0.6, 1.0);
+    PAG::Renderer::getInstancia().creaShaderProgram();
+    PAG::Renderer::getInstancia().creaModelo();
 
-    // Ciclo de eventos de la aplicación. La condición de parada es que la
-    // ventana principal deba cerrarse. Por ejemplo, si el usuario pulsa el
-    // botón de cerrar la ventana (la X).
+    // Ciclo de eventos de la aplicación.
     while (!glfwWindowShouldClose(window)) {
         // Borra los buffers (color y profundidad)
         PAG::Renderer::getInstancia().refrescar();
         PAG::Gui::getInstancia().RefrescarFrame();
-        // GLFW usa un doble buffer para que no haya parpadeo. Esta orden
-        // intercambia el buffer back (en el que se ha estado dibujando) por el
-        // que se mostraba hasta ahora (front).
+
+        // Hace el SWAP del doble buffer
         glfwSwapBuffers(window);
 
         // Obtiene y organiza los eventos pendientes, tales como pulsaciones de
@@ -139,7 +135,7 @@ int main() {
         // de eventos y después de glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    // Una vez terminado el ciclo de eventos, liberar recursos, etc.
+    // Liberamos recursos
     PAG::Gui::getInstancia().EndGui();
     PAG::Gui::getInstancia().consola->NuevoMensaje("Finishing application pag prueba");
     glfwDestroyWindow(window); // Cerramos y destruimos la ventana de la aplicación.

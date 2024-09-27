@@ -20,8 +20,8 @@ namespace PAG {
         static ImVec4 colorAnterior = color;
         if (ImGui::ColorPicker4("Color Picker", (float*)&color, ImGuiColorEditFlags_PickerHueWheel)) {
             if (color.x != colorAnterior.x || color.y != colorAnterior.y || color.z != colorAnterior.z || color.w != colorAnterior.w) {
-                std::string confirmacion = PAG::Renderer::getInstancia().CambiarColorFondo(color.x, color.y, color.z, color.w);
-                PAG::Gui::getInstancia().consola->NuevoMensaje(confirmacion);
+                PAG::Renderer::getInstancia().CambiarColorFondo(color.x, color.y, color.z, color.w);
+                PAG::Gui::getInstancia().consola->NuevoMensaje("Color cambiado a " + std::to_string(color.x) + " " + std::to_string(color.y) + " " + std::to_string(color.z) + " " + std::to_string(color.w));
                 colorAnterior = color;
             }
         }

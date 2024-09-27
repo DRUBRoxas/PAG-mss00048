@@ -21,6 +21,14 @@ namespace PAG {
      */
     class Renderer {
     private:
+        //Identificadores shaders
+        GLuint idVS = 0; // Identificador del vertex shader
+        GLuint idFS = 0; // Identificador del fragment shader
+        GLuint idSP = 0; // Identificador del shader program
+        GLuint idVAO = 0; // Identificador del vertex array object
+        GLuint idVBO = 0; // Identificador del vertex buffer object
+        GLuint idIBO = 0; // Identificador del index buffer object
+
         static Renderer *instancia; ///< Instancia única de la clase
         Renderer();
         float r = 0.6;
@@ -34,11 +42,17 @@ namespace PAG {
         void refrescar();
         void ResizeVentana(int ancho, int alto);
 
-        std::string CambiarColorFondo(double r, double g, double b, double a);
+        void CambiarColorFondo(double r, double g, double b, double a);
 
         std::string ObtenerDatos();
         void ActivarProfundidad();
         void DesactivarProfundidad();
+
+        void inicializaOpenGL();
+
+        void creaShaderProgram();
+
+        void creaModelo();
     };
 } // PAG
 
