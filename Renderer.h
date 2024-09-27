@@ -28,7 +28,7 @@ namespace PAG {
         GLuint idVAO = 0; // Identificador del vertex array object
         GLuint idVBO = 0; // Identificador del vertex buffer object
         GLuint idIBO = 0; // Identificador del index buffer object
-
+        bool exito=false; // Para saber si se ha cargado correctamente el shader program
         static Renderer *instancia; ///< Instancia única de la clase
         Renderer();
         float r = 0.6;

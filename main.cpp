@@ -118,8 +118,17 @@ int main() {
     // Inicializamos OpenGL,imgui y cargamos los shaders
     PAG::Renderer::getInstancia().inicializaOpenGL();
     PAG::Gui::getInstancia().StartGui(window);
-    PAG::Renderer::getInstancia().creaShaderProgram();
-    PAG::Renderer::getInstancia().creaModelo();
+    try {
+        PAG::Renderer::getInstancia().creaShaderProgram();
+    } catch (std::exception &e) {
+        PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
+    }
+
+    try {
+        PAG::Renderer::getInstancia().creaModelo();
+    }catch (std::exception &e) {
+        PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
+    }
 
     // Ciclo de eventos de la aplicación.
     while (!glfwWindowShouldClose(window)) {

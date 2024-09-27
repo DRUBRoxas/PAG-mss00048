@@ -3,7 +3,10 @@
 //
 
 #include "Renderer.h"
+
+#include <fstream>
 #include <iostream>
+#include <sstream>
 
 #include "Consola.h"
 
@@ -53,11 +56,13 @@ namespace PAG {
     //Método que hace el refresco de la escena
     void Renderer::refrescar() {
         glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-        glPolygonMode ( GL_FRONT_AND_BACK, GL_FILL );
-        glUseProgram ( idSP );
-        glBindVertexArray ( idVAO );
-        glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, idIBO );
-        glDrawElements ( GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr );
+        if(exito) {
+            glPolygonMode ( GL_FRONT_AND_BACK, GL_FILL );
+            glUseProgram ( idSP );
+            glBindVertexArray ( idVAO );
+            glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, idIBO );
+            glDrawElements ( GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr );
+        }
     }
 
     void Renderer::ResizeVentana(int ancho, int alto) {
@@ -97,11 +102,12 @@ namespace PAG {
     }
 
     /**
-    * Método para crear, compilar y enlazar el shader program
+    * Función para crear, compilar y enlazar el shader program
     * @note No se incluye ninguna comprobación de errores
     */
     void PAG::Renderer::creaShaderProgram( )
     {
+        GLint resultadoCompilacion;
         std::string miVertexShader =
         "#version 410\n"
         "layout (location = 0) in vec3 posicion;\n"
@@ -118,18 +124,72 @@ namespace PAG {
         const GLchar* fuenteVS = miVertexShader.c_str ();
         glShaderSource ( idVS, 1, &fuenteVS, nullptr );
         glCompileShader ( idVS );
+        // Comprobamos si la compilación ha sido correcta
+        glGetShaderiv ( idVS, GL_COMPILE_STATUS, &resultadoCompilacion );
+        if(resultadoCompilacion == GL_FALSE)
+        {
+            GLint longitudMensaje;
+            std::string mensaje="";
+            glGetShaderiv ( idVS, GL_INFO_LOG_LENGTH, &longitudMensaje );
+            if ( longitudMensaje > 0 )
+            {
+                GLchar* mensajeError = new GLchar[longitudMensaje];
+                glGetShaderInfoLog ( idVS, longitudMensaje, nullptr, mensajeError );
+                mensaje.assign(mensajeError);
+                delete[] mensajeError;
+                mensajeError = nullptr;
+                throw std::runtime_error("Error al compilar el vertex shader: "+mensaje);
+            }
+        }
+
         idFS = glCreateShader ( GL_FRAGMENT_SHADER );
         const GLchar* fuenteFS = miFragmentShader.c_str ();
         glShaderSource ( idFS, 1, &fuenteFS, nullptr );
         glCompileShader ( idFS );
+        // Comprobamos si la compilación ha sido correcta
+        glGetShaderiv ( idFS, GL_COMPILE_STATUS, &resultadoCompilacion );
+        if(resultadoCompilacion == GL_FALSE)
+        {
+            GLint longitudMensaje;
+            std::string mensaje="";
+            glGetShaderiv ( idVS, GL_INFO_LOG_LENGTH, &longitudMensaje );
+            if ( longitudMensaje > 0 )
+            {
+                GLchar* mensajeError = new GLchar[longitudMensaje];
+                glGetShaderInfoLog ( idVS, longitudMensaje, nullptr, mensajeError );
+                mensaje.assign(mensajeError);
+                delete[] mensajeError;
+                mensajeError = nullptr;
+                throw std::runtime_error("Error al compilar el vertex shader: "+mensaje);
+            }
+        }
+
         idSP = glCreateProgram ();
         glAttachShader ( idSP, idVS );
         glAttachShader ( idSP, idFS );
         glLinkProgram ( idSP );
+        GLint resultadoEnlazado = 0;
+        glGetProgramiv ( idSP, GL_LINK_STATUS, &resultadoEnlazado );
+        if ( resultadoEnlazado == GL_FALSE )
+        {  // Ha habido un error y hay que recuperar su descripción, para saber qué ha pasado
+            GLint tamMsj = 0;
+            std::string mensaje = "";
+            glGetProgramiv ( idSP, GL_INFO_LOG_LENGTH, &tamMsj );
+            if ( tamMsj > 0 )
+            {  GLchar* mensajeFormatoC = new GLchar[tamMsj];
+                GLint datosEscritos = 0;
+                glGetProgramInfoLog ( idSP, tamMsj, &datosEscritos, mensajeFormatoC );
+                mensaje.assign ( mensajeFormatoC );
+                delete[] mensajeFormatoC;
+                mensajeFormatoC = nullptr;
+                throw std::runtime_error("Error al enlazar el shader program: "+mensaje);
+            }
+        }
+        exito=true;
     }
 
     /**
-    * Método para crear el VAO para el modelo a renderizar
+    * Función para crear el VAO para el modelo a renderizar
     * @note No se incluye ninguna comprobación de errores
     */
     void PAG::Renderer::creaModelo ( )
@@ -150,6 +210,16 @@ namespace PAG {
         glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, idIBO );
         glBufferData ( GL_ELEMENT_ARRAY_BUFFER, 3*sizeof(GLuint), indices,
         GL_STATIC_DRAW );
+    }
+
+    std::string leerArchivo(const std::string& rutaArchivo) {
+        std::ifstream archivo(rutaArchivo);
+        if (!archivo.is_open()) {
+            throw std::runtime_error("Error al abrir el archivo: " + rutaArchivo);
+        }
+        std::stringstream buffer;
+        buffer << archivo.rdbuf();
+        return buffer.str();
     }
 
 } // PAG
