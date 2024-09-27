@@ -46,3 +46,5 @@ ImGuiColorEditFlags_PickerHueWheel
 ```
 Hay muchas mas flags que permiten la modificación al gusto del selector del color, pero he decidido
 usar solo esta por ahora.
+
+# Practica 3:
