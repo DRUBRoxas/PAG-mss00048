@@ -67,6 +67,24 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 }
 
 int main() {
+    // Rutas de los shaders TODO cambiar a un archivo de configuración y ser capaz de leer varios shaders
+    std::string rutaShaderVS = "shaders/pag03-vs.glsl";
+    std::string rutaShaderFS = "shaders/pag03-fs.glsl";
+    std::string shaderVS;
+    std::string shaderFS;
+    //Cargamos archivos shaders
+    try {
+        shaderVS= PAG::Renderer::getInstancia().cargaArchivo(rutaShaderVS);
+    } catch (std::exception &e) {
+        PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
+    }
+
+    try {
+        shaderFS= PAG::Renderer::getInstancia().cargaArchivo(rutaShaderFS);
+    } catch (std::exception &e) {
+        PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
+    }
+
     PAG::Gui::getInstancia().consola->NuevoMensaje("Starting Application PAG-Prueba 01");
     //-Este callback hay que registrarlo ANTES de llamar a glfwInit
     glfwSetErrorCallback((GLFWerrorfun) error_callback);
@@ -119,7 +137,7 @@ int main() {
     PAG::Renderer::getInstancia().inicializaOpenGL();
     PAG::Gui::getInstancia().StartGui(window);
     try {
-        PAG::Renderer::getInstancia().creaShaderProgram();
+        PAG::Renderer::getInstancia().creaShaderProgram(shaderVS, shaderFS);
     } catch (std::exception &e) {
         PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
     }

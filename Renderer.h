@@ -6,6 +6,10 @@
 #define RENDERER_H
 #include <string>
 #include <glad/glad.h>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 /**
  * Espacio de nombres para las prácticas de Programación de Aplicaciones
  * Gráficas
@@ -28,9 +32,16 @@ namespace PAG {
         GLuint idVAO = 0; // Identificador del vertex array object
         GLuint idVBO = 0; // Identificador del vertex buffer object
         GLuint idIBO = 0; // Identificador del index buffer object
+
+        //Variables para almacenar el código fuente de los shaders
+        std::string fuenteVS; // Código fuente del vertex shader
+        std::string fuenteFS; // Código fuente del fragment shader
+
         bool exito=false; // Para saber si se ha cargado correctamente el shader program
         static Renderer *instancia; ///< Instancia única de la clase
+
         Renderer();
+        //guardamos las coordenadas RGBA del color de fondo
         float r = 0.6;
         float g = 0.6;
         float b = 0.6;
@@ -50,8 +61,8 @@ namespace PAG {
 
         void inicializaOpenGL();
 
-        void creaShaderProgram();
-
+        void creaShaderProgram(std::string mivertexShader, std::string mifragmentShader);
+        std::string cargaArchivo(std::string rutaFuenteGLSL);
         void creaModelo();
     };
 } // PAG

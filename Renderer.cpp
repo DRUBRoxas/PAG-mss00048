@@ -4,11 +4,6 @@
 
 #include "Renderer.h"
 
-#include <fstream>
-#include <iostream>
-#include <sstream>
-
-#include "Consola.h"
 
 namespace PAG {
     Renderer *Renderer::instancia = nullptr;
@@ -105,21 +100,9 @@ namespace PAG {
     * Función para crear, compilar y enlazar el shader program
     * @note No se incluye ninguna comprobación de errores
     */
-    void PAG::Renderer::creaShaderProgram( )
+    void PAG::Renderer::creaShaderProgram(std::string miVertexShader, std::string miFragmentShader)
     {
         GLint resultadoCompilacion;
-        std::string miVertexShader =
-        "#version 410\n"
-        "layout (location = 0) in vec3 posicion;\n"
-        "void main ()\n"
-        "{ gl_Position = vec4 ( posicion, 1 );\n"
-        "}\n";
-        std::string miFragmentShader =
-        "#version 410\n"
-        "out vec4 colorFragmento;\n"
-        "void main ()\n"
-        "{ colorFragmento = vec4 ( 1.0, .4, .2, 1.0 );\n"
-        "}\n";
         idVS = glCreateShader ( GL_VERTEX_SHADER );
         const GLchar* fuenteVS = miVertexShader.c_str ();
         glShaderSource ( idVS, 1, &fuenteVS, nullptr );
@@ -210,6 +193,26 @@ namespace PAG {
         glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, idIBO );
         glBufferData ( GL_ELEMENT_ARRAY_BUFFER, 3*sizeof(GLuint), indices,
         GL_STATIC_DRAW );
+    }
+
+    std::string PAG::Renderer::cargaArchivo(std::string rutaFuenteGLSL) {
+        std::ifstream archivoShader;
+        archivoShader.open(rutaFuenteGLSL);
+
+        if (!archivoShader.is_open()) {
+            throw std::runtime_error("Error al abrir el archivo: " + rutaFuenteGLSL);
+        }
+
+        std::stringstream streamShader;
+        streamShader << archivoShader.rdbuf();
+        std::string codigoFuenteShader = streamShader.str();
+        archivoShader.close();
+
+        if (codigoFuenteShader.empty()) {
+            throw std::runtime_error("Error al leer el archivo: " + rutaFuenteGLSL);
+        }
+
+        return codigoFuenteShader;
     }
 
 } // PAG
