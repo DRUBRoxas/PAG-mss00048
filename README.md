@@ -48,3 +48,9 @@ Hay muchas mas flags que permiten la modificación al gusto del selector del col
 usar solo esta por ahora.
 
 # Practica 3:
+## Ejercicio 5
+Este comportamiento se debe a que la proyección y las coordenadas de la ventana no se están
+ajustando correctamente cuando se redimensiona la ventana. Al cambiar el tamaño de la ventana,
+la relación de aspecto de la ventana cambia, lo que significa que la proyección debee ajustarse a la nueva relación
+de aspecto.
+

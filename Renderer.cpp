@@ -102,6 +102,7 @@ namespace PAG {
     */
     void PAG::Renderer::creaShaderProgram(std::string miVertexShader, std::string miFragmentShader)
     {
+        //Vertex Shader
         GLint resultadoCompilacion;
         idVS = glCreateShader ( GL_VERTEX_SHADER );
         const GLchar* fuenteVS = miVertexShader.c_str ();
@@ -125,6 +126,7 @@ namespace PAG {
             }
         }
 
+        //FRAGMENT SHADER
         idFS = glCreateShader ( GL_FRAGMENT_SHADER );
         const GLchar* fuenteFS = miFragmentShader.c_str ();
         glShaderSource ( idFS, 1, &fuenteFS, nullptr );
@@ -146,7 +148,7 @@ namespace PAG {
                 throw std::runtime_error("Error al compilar el vertex shader: "+mensaje);
             }
         }
-
+        //SHADER PROGRAM
         idSP = glCreateProgram ();
         glAttachShader ( idSP, idVS );
         glAttachShader ( idSP, idFS );
@@ -171,28 +173,69 @@ namespace PAG {
         exito=true;
     }
 
-    /**
-    * Función para crear el VAO para el modelo a renderizar
-    * @note No se incluye ninguna comprobación de errores
-    */
-    void PAG::Renderer::creaModelo ( )
-    { GLfloat vertices[] = {-.5,-.5, 0,
-    .5,-.5, 0,
-    .0, .5, 0 };
+    void PAG::Renderer::creaModeloEntrelazado() {
+        GLfloat vertices[] = {
+            // Positions        // Colors
+            -0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+             0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+             0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
+        };
+
         GLuint indices[] = { 0, 1, 2 };
-        glGenVertexArrays ( 1, &idVAO );
-        glBindVertexArray ( idVAO );
-       glGenBuffers ( 1, &idVBO );
-        glBindBuffer ( GL_ARRAY_BUFFER, idVBO );
-        glBufferData ( GL_ARRAY_BUFFER, 9*sizeof(GLfloat), vertices,
-        GL_STATIC_DRAW );
-        glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat),
-        nullptr );
-        glEnableVertexAttribArray ( 0 );
-        glGenBuffers ( 1, &idIBO );
-        glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, idIBO );
-        glBufferData ( GL_ELEMENT_ARRAY_BUFFER, 3*sizeof(GLuint), indices,
-        GL_STATIC_DRAW );
+
+        glGenVertexArrays(1, &idVAO);
+        glBindVertexArray(idVAO);
+
+        glGenBuffers(1, &idVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, idVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+        glEnableVertexAttribArray(1);
+
+        glGenBuffers(1, &idIBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    }
+
+    void PAG::Renderer::creaModelo() {
+        GLfloat vertices[] = {
+            -0.5f, -0.5f, 0.0f,
+             0.5f, -0.5f, 0.0f,
+             0.0f,  0.5f, 0.0f
+        };
+
+        GLfloat colors[] = {
+            1.0f, 0.0f, 0.0f,1.0f,
+            0.0f, 1.0f, 0.0f,1.0f,
+            0.0f, 0.0f, 1.0f,1.0f
+        };
+
+        GLuint indices[] = { 0, 1, 2 };
+
+        glGenVertexArrays(1, &idVAO);
+        glBindVertexArray(idVAO);
+
+        glGenBuffers(1, &idVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, idVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), nullptr);
+        glEnableVertexAttribArray(0);
+
+        //Color
+        GLuint colorVBO;
+        glGenBuffers(1, &colorVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), nullptr);
+        glEnableVertexAttribArray(1);
+
+        glGenBuffers(1, &idIBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     }
 
     std::string PAG::Renderer::cargaArchivo(std::string rutaFuenteGLSL) {

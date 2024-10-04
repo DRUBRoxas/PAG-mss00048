@@ -63,6 +63,9 @@ namespace PAG {
 
         void creaShaderProgram(std::string mivertexShader, std::string mifragmentShader);
         std::string cargaArchivo(std::string rutaFuenteGLSL);
+
+        void creaModeloEntrelazado();
+
         void creaModelo();
     };
 } // PAG
