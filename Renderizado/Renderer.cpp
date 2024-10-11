@@ -121,8 +121,7 @@ namespace PAG {
             shaderProgram = nullptr;
         }
         shaderProgram = new ProgramShader();
-        shaderProgram->compilaShader(nombreArchivo);
-        shaderProgram->enlazar();
+        shaderProgram->ObtenShaders(nombreArchivo);
         creaModeloEntrelazado();
     }
 } // PAG

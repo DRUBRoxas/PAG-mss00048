@@ -3,9 +3,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "Gui.h"
-#include "Renderer.h"
-#include "imgui/imgui.h"
+#include "Interfaz/Gui.h"
+#include "Renderizado/Renderer.h"
+#include "Interfaz/imgui/imgui.h"
 
 //Constantes
 // Esta función callback será llamada cuando GLFW produzca algún error

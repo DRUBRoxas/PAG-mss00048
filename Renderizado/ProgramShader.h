@@ -7,6 +7,10 @@
 #include <string>
 #include <utility>
 #include <glad/glad.h>
+#include <fstream>
+#include <sstream>
+#include <stdexcept>
+#include "Shader.h"
 namespace PAG {
 
 class ProgramShader {
@@ -24,9 +28,13 @@ public:
     ProgramShader();
     virtual ~ProgramShader();
     void enlazar();
+
+    void ObtenShaders(std::string nombre);
+
     GLuint getIdSP() const { return idSP; }
     void compilaShader(std::string nombreArchivo);
-    std::pair<std::string, std::string> CargaArchivos(std::string nombreArchivo);
+
+    std::string CargaArchivos(std::string nombreArchivo);
     GLuint getIdVS() const { return idVS; }
     GLuint getIdFS() const { return idFS; }
     std::string getNombreArchivo() const { return nombreArchivo; }

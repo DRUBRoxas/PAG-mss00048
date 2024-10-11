@@ -64,3 +64,6 @@ Despues, desde la clase TextBox, se llama (con el nombre del archivo) al program
 ![UMLPractica4.png](Assets%2FUMLPractica4.png)
 
 
+# Practica 5
+Cambios a la practica anterior, se ha desacoplado el shader y el shader program, separandolos cada uno en su propia clase y llevandolo mejor, el UML despues del cambio es:
+> TODO: Añadir UML

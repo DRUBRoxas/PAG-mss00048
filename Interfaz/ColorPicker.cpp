@@ -3,7 +3,7 @@
 //
 
 #include "ColorPicker.h"
-#include "Renderer.h"
+#include "../Renderizado/Renderer.h"
 #include "Gui.h"
 #include "imgui/imgui.h"
 

@@ -1,7 +1,7 @@
 //
 // Created by Manuel on 10/10/2024.
 //
-#include "Renderer.h"
+#include "../Renderizado/Renderer.h"
 #include "TextBox.h"
 
 #include "Gui.h"

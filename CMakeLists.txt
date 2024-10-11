@@ -5,21 +5,23 @@ project(PruebaGraficas)
 
 find_package(glad)
 find_package(glfw3)
-file( GLOB IMGUI imgui/*cpp)
+file( GLOB IMGUI Interfaz/imgui/*cpp)
 # Then, link your executable or library with the corresponding package targets:
 add_executable(PruebaGraficas main.cpp
-        Renderer.cpp
+        Renderizado/Renderer.cpp
         ${IMGUI}
-        gui.cpp
-        gui.h
-        Consola.cpp
-        Consola.h
-        ColorPicker.cpp
-        ColorPicker.h
-        ProgramShader.cpp
-        ProgramShader.h
-        textbox.cpp
-        textbox.h)
+        Interfaz/Gui.cpp
+        Interfaz/Gui.h
+        Interfaz/Consola.cpp
+        Interfaz/Consola.h
+        Interfaz/ColorPicker.cpp
+        Interfaz/ColorPicker.h
+        Renderizado/ProgramShader.cpp
+        Renderizado/ProgramShader.h
+        Interfaz/TextBox.cpp
+        Interfaz/TextBox.h
+        Renderizado/Shader.cpp
+        Renderizado/Shader.h)
 
 target_link_libraries(PruebaGraficas glad::glad)
 target_link_libraries(PruebaGraficas glfw)
