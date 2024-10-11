@@ -14,11 +14,7 @@ private:
 public:
     ColorPicker();
     ~ColorPicker();
-    void SetPosicion(int x, int y);
-
     void RefrescarColorPicker();
-    void NuevoColor(float r, float g, float b, float a);
-
 };
 
 } // PAG

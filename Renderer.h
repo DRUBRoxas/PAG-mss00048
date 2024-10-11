@@ -10,6 +10,8 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+
+#include "ProgramShader.h"
 /**
  * Espacio de nombres para las prácticas de Programación de Aplicaciones
  * Gráficas
@@ -25,10 +27,6 @@ namespace PAG {
      */
     class Renderer {
     private:
-        //Identificadores shaders
-        GLuint idVS = 0; // Identificador del vertex shader
-        GLuint idFS = 0; // Identificador del fragment shader
-        GLuint idSP = 0; // Identificador del shader program
         GLuint idVAO = 0; // Identificador del vertex array object
         GLuint idVBO = 0; // Identificador del vertex buffer object
         GLuint idIBO = 0; // Identificador del index buffer object
@@ -37,6 +35,7 @@ namespace PAG {
         std::string fuenteVS; // Código fuente del vertex shader
         std::string fuenteFS; // Código fuente del fragment shader
 
+        PAG::ProgramShader *shaderProgram; // Shader program
         bool exito=false; // Para saber si se ha cargado correctamente el shader program
         static Renderer *instancia; ///< Instancia única de la clase
 
@@ -60,13 +59,9 @@ namespace PAG {
         void DesactivarProfundidad();
 
         void inicializaOpenGL();
-
-        void creaShaderProgram(std::string mivertexShader, std::string mifragmentShader);
-        std::string cargaArchivo(std::string rutaFuenteGLSL);
-
         void creaModeloEntrelazado();
 
-        void creaModelo();
+        void enlazarShaderProgram(std::string nombreArchivo);
     };
 } // PAG
 

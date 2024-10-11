@@ -4,30 +4,21 @@
 
 #include "Renderer.h"
 
-
 namespace PAG {
     Renderer *Renderer::instancia = nullptr;
     //guardamos las coordenadas RGBA del color de fondo
 
     //Constructor por defecto
     Renderer::Renderer() {
+        shaderProgram = nullptr;
     }
+
 
     //Destructor
     Renderer::~Renderer() {
         if (instancia) {
             delete instancia;
             instancia = nullptr;
-        }
-
-        if ( idVS != 0 )
-        { glDeleteShader ( idVS );
-        }
-        if ( idFS != 0 )
-        { glDeleteShader ( idFS );
-        }
-        if ( idSP != 0 )
-        { glDeleteProgram ( idSP );
         }
         if ( idVBO != 0 )
         { glDeleteBuffers ( 1, &idVBO );
@@ -51,9 +42,9 @@ namespace PAG {
     //Método que hace el refresco de la escena
     void Renderer::refrescar() {
         glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-        if(exito) {
+        if(shaderProgram != nullptr){
             glPolygonMode ( GL_FRONT_AND_BACK, GL_FILL );
-            glUseProgram ( idSP );
+            glUseProgram ( shaderProgram->getIdSP() );
             glBindVertexArray ( idVAO );
             glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, idIBO );
             glDrawElements ( GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr );
@@ -96,83 +87,6 @@ namespace PAG {
         glEnable ( GL_MULTISAMPLE );
     }
 
-    /**
-    * Función para crear, compilar y enlazar el shader program
-    * @note No se incluye ninguna comprobación de errores
-    */
-    void PAG::Renderer::creaShaderProgram(std::string miVertexShader, std::string miFragmentShader)
-    {
-        //Vertex Shader
-        GLint resultadoCompilacion;
-        idVS = glCreateShader ( GL_VERTEX_SHADER );
-        const GLchar* fuenteVS = miVertexShader.c_str ();
-        glShaderSource ( idVS, 1, &fuenteVS, nullptr );
-        glCompileShader ( idVS );
-        // Comprobamos si la compilación ha sido correcta
-        glGetShaderiv ( idVS, GL_COMPILE_STATUS, &resultadoCompilacion );
-        if(resultadoCompilacion == GL_FALSE)
-        {
-            GLint longitudMensaje;
-            std::string mensaje="";
-            glGetShaderiv ( idVS, GL_INFO_LOG_LENGTH, &longitudMensaje );
-            if ( longitudMensaje > 0 )
-            {
-                GLchar* mensajeError = new GLchar[longitudMensaje];
-                glGetShaderInfoLog ( idVS, longitudMensaje, nullptr, mensajeError );
-                mensaje.assign(mensajeError);
-                delete[] mensajeError;
-                mensajeError = nullptr;
-                throw std::runtime_error("Error al compilar el vertex shader: "+mensaje);
-            }
-        }
-
-        //FRAGMENT SHADER
-        idFS = glCreateShader ( GL_FRAGMENT_SHADER );
-        const GLchar* fuenteFS = miFragmentShader.c_str ();
-        glShaderSource ( idFS, 1, &fuenteFS, nullptr );
-        glCompileShader ( idFS );
-        // Comprobamos si la compilación ha sido correcta
-        glGetShaderiv ( idFS, GL_COMPILE_STATUS, &resultadoCompilacion );
-        if(resultadoCompilacion == GL_FALSE)
-        {
-            GLint longitudMensaje;
-            std::string mensaje="";
-            glGetShaderiv ( idVS, GL_INFO_LOG_LENGTH, &longitudMensaje );
-            if ( longitudMensaje > 0 )
-            {
-                GLchar* mensajeError = new GLchar[longitudMensaje];
-                glGetShaderInfoLog ( idVS, longitudMensaje, nullptr, mensajeError );
-                mensaje.assign(mensajeError);
-                delete[] mensajeError;
-                mensajeError = nullptr;
-                throw std::runtime_error("Error al compilar el vertex shader: "+mensaje);
-            }
-        }
-        //SHADER PROGRAM
-        idSP = glCreateProgram ();
-        glAttachShader ( idSP, idVS );
-        glAttachShader ( idSP, idFS );
-        glLinkProgram ( idSP );
-        GLint resultadoEnlazado = 0;
-        glGetProgramiv ( idSP, GL_LINK_STATUS, &resultadoEnlazado );
-        if ( resultadoEnlazado == GL_FALSE )
-        {  // Ha habido un error y hay que recuperar su descripción, para saber qué ha pasado
-            GLint tamMsj = 0;
-            std::string mensaje = "";
-            glGetProgramiv ( idSP, GL_INFO_LOG_LENGTH, &tamMsj );
-            if ( tamMsj > 0 )
-            {  GLchar* mensajeFormatoC = new GLchar[tamMsj];
-                GLint datosEscritos = 0;
-                glGetProgramInfoLog ( idSP, tamMsj, &datosEscritos, mensajeFormatoC );
-                mensaje.assign ( mensajeFormatoC );
-                delete[] mensajeFormatoC;
-                mensajeFormatoC = nullptr;
-                throw std::runtime_error("Error al enlazar el shader program: "+mensaje);
-            }
-        }
-        exito=true;
-    }
-
     void PAG::Renderer::creaModeloEntrelazado() {
         GLfloat vertices[] = {
             // Positions        // Colors
@@ -201,61 +115,14 @@ namespace PAG {
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
     }
 
-    void PAG::Renderer::creaModelo() {
-        GLfloat vertices[] = {
-            -0.5f, -0.5f, 0.0f,
-             0.5f, -0.5f, 0.0f,
-             0.0f,  0.5f, 0.0f
-        };
-
-        GLfloat colors[] = {
-            1.0f, 0.0f, 0.0f,1.0f,
-            0.0f, 1.0f, 0.0f,1.0f,
-            0.0f, 0.0f, 1.0f,1.0f
-        };
-
-        GLuint indices[] = { 0, 1, 2 };
-
-        glGenVertexArrays(1, &idVAO);
-        glBindVertexArray(idVAO);
-
-        glGenBuffers(1, &idVBO);
-        glBindBuffer(GL_ARRAY_BUFFER, idVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), nullptr);
-        glEnableVertexAttribArray(0);
-
-        //Color
-        GLuint colorVBO;
-        glGenBuffers(1, &colorVBO);
-        glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
-        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), nullptr);
-        glEnableVertexAttribArray(1);
-
-        glGenBuffers(1, &idIBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    }
-
-    std::string PAG::Renderer::cargaArchivo(std::string rutaFuenteGLSL) {
-        std::ifstream archivoShader;
-        archivoShader.open(rutaFuenteGLSL);
-
-        if (!archivoShader.is_open()) {
-            throw std::runtime_error("Error al abrir el archivo: " + rutaFuenteGLSL);
+    void Renderer::enlazarShaderProgram(std::string nombreArchivo) {
+        if(shaderProgram!=nullptr){
+            delete shaderProgram;
+            shaderProgram = nullptr;
         }
-
-        std::stringstream streamShader;
-        streamShader << archivoShader.rdbuf();
-        std::string codigoFuenteShader = streamShader.str();
-        archivoShader.close();
-
-        if (codigoFuenteShader.empty()) {
-            throw std::runtime_error("Error al leer el archivo: " + rutaFuenteGLSL);
-        }
-
-        return codigoFuenteShader;
+        shaderProgram = new ProgramShader();
+        shaderProgram->compilaShader(nombreArchivo);
+        shaderProgram->enlazar();
+        creaModeloEntrelazado();
     }
-
 } // PAG

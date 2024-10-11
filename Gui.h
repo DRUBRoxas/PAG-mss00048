@@ -14,16 +14,19 @@
 
 #include "ColorPicker.h"
 #include "Consola.h"
+#include "TextBox.h"
 
 namespace PAG {
+    class TextBox;
 
-class Gui {
+    class Gui {
 private:
     static Gui *instancia; ///< Instancia única de la clase
     Gui();
 public:
     Consola* consola;
     ColorPicker* colorPicker;
+    TextBox* textBox;
     virtual ~Gui();
     static Gui &getInstancia();
     void StartGui(GLFWwindow *window);

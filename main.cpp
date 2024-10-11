@@ -7,6 +7,7 @@
 #include "Renderer.h"
 #include "imgui/imgui.h"
 
+//Constantes
 // Esta función callback será llamada cuando GLFW produzca algún error
 void error_callback(int errno, const char *desc) {
     std::string aux(desc);
@@ -22,14 +23,14 @@ void window_refresh_callback(GLFWwindow *window) {
     // que se mostraba hasta ahora front. Debe ser la última orden de
     // este callback
     glfwSwapBuffers(window);
-    PAG::Gui::getInstancia().consola->NuevoMensaje("Refresh callback called");
+  //  PAG::Gui::getInstancia().consola->NuevoMensaje("Refresh callback called");
 }
 
 // Esta función callback será llamada cada vez que se cambie el tamaño
 // del área de dibujo OpenGL.
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     PAG::Renderer::getInstancia().ResizeVentana(width, height);
-    PAG::Gui::getInstancia().consola->NuevoMensaje("Resize callback called");
+    //PAG::Gui::getInstancia().consola->NuevoMensaje("Resize callback called");
 }
 
 // Esta función callback será llamada cada vez que se pulse una tecla
@@ -38,7 +39,7 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
-    PAG::Gui::getInstancia().consola->NuevoMensaje("Key callback called");
+    //PAG::Gui::getInstancia().consola->NuevoMensaje("Key callback called");
 }
 
 // Esta función callback será llamada cada vez que se pulse algún botón
@@ -68,22 +69,7 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 
 int main() {
     // Rutas de los shaders TODO cambiar a un archivo de configuración y ser capaz de leer varios shaders
-    std::string rutaShaderVS = "shaders/pag03-vs.glsl";
-    std::string rutaShaderFS = "shaders/pag03-fs.glsl";
-    std::string shaderVS;
-    std::string shaderFS;
-    //Cargamos archivos shaders
-    try {
-        shaderVS= PAG::Renderer::getInstancia().cargaArchivo(rutaShaderVS);
-    } catch (std::exception &e) {
-        PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
-    }
-
-    try {
-        shaderFS= PAG::Renderer::getInstancia().cargaArchivo(rutaShaderFS);
-    } catch (std::exception &e) {
-        PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
-    }
+    std::string nombreArchivo = "pag03";
 
     PAG::Gui::getInstancia().consola->NuevoMensaje("Starting Application PAG-Prueba 01");
     //-Este callback hay que registrarlo ANTES de llamar a glfwInit
@@ -136,18 +122,17 @@ int main() {
     // Inicializamos OpenGL,imgui y cargamos los shaders
     PAG::Renderer::getInstancia().inicializaOpenGL();
     PAG::Gui::getInstancia().StartGui(window);
-    try {
-        PAG::Renderer::getInstancia().creaShaderProgram(shaderVS, shaderFS);
-    } catch (std::exception &e) {
-        PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
-    }
-
-    try {
-        PAG::Renderer::getInstancia().creaModelo();
-    }catch (std::exception &e) {
-        PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
-    }
-
+    // try {
+    //    // PAG::Renderer::getInstancia().enlazarShaderProgram(nombreArchivo);
+    // } catch (std::exception &e) {
+    //     PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
+    // }
+    //
+    // try {
+    //     //PAG::Renderer::getInstancia().creaModeloEntrelazado();
+    // }catch (std::exception &e) {
+    //     PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
+    // }
     // Ciclo de eventos de la aplicación.
     while (!glfwWindowShouldClose(window)) {
         // Borra los buffers (color y profundidad)

@@ -4,14 +4,8 @@
 
 #include "Consola.h"
 
-#include <ctime>
-#include <string>
-#include <vector>
-
-#include "imgui/imgui_internal.h"
 
 namespace PAG {
-    std::vector<std::string> mensajes;
     Consola::Consola() {
     }
 

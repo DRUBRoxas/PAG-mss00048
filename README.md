@@ -54,3 +54,13 @@ ajustando correctamente cuando se redimensiona la ventana. Al cambiar el tamaño
 la relación de aspecto de la ventana cambia, lo que significa que la proyección debee ajustarse a la nueva relación
 de aspecto.
 
+# Practica 4:
+## Ejercicio 4
+He creado la funcion auxiliar leerArchivo, que se encarga de leer los archivos, manejar los errores y leer el contenido
+Se ha añadido y modificado el metodo cargaArchivos, para cargar las dos versiones del archivo glsl de golpe.
+Se ha añadido manejo de excepciones en el metodo cargaArchivos, para asegurarse de que cuando se lance la excepcio, el mensaje se mande a la consola
+y siga funcionando el programa. A parte de esto, se ha encapsulado en su propia clase el Shader Program, para que el renderer haga unicamente su trabajo.
+Despues, desde la clase TextBox, se llama (con el nombre del archivo) al program shader, que se encarga de hacer todo lo demás.
+![UMLPractica4.png](Assets%2FUMLPractica4.png)
+
+

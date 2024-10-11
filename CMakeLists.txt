@@ -15,7 +15,11 @@ add_executable(PruebaGraficas main.cpp
         Consola.cpp
         Consola.h
         ColorPicker.cpp
-        ColorPicker.h)
+        ColorPicker.h
+        ProgramShader.cpp
+        ProgramShader.h
+        textbox.cpp
+        textbox.h)
 
 target_link_libraries(PruebaGraficas glad::glad)
 target_link_libraries(PruebaGraficas glfw)
