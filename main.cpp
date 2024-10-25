@@ -2,7 +2,9 @@
 // IMPORTANTE: El include de GLAD debe estar siempre ANTES de el de GLFW
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/vec3.hpp>
 
+#include "Camera.h"
 #include "Interfaz/Gui.h"
 #include "Renderizado/Renderer.h"
 #include "Interfaz/imgui/imgui.h"
@@ -30,6 +32,7 @@ void window_refresh_callback(GLFWwindow *window) {
 // del área de dibujo OpenGL.
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     PAG::Renderer::getInstancia().ResizeVentana(width, height);
+    PAG::Renderer::getInstancia().camara.cambiarAspecto(width, height);
     //PAG::Gui::getInstancia().consola->NuevoMensaje("Resize callback called");
 }
 
@@ -39,17 +42,22 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
+
+    // //boton arriba tilt + boton abajo tilt -
+    // if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
+    //     PAG::Renderer::getInstancia().camara.Tilt(5);
+    // }
+    // if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
+    //     PAG::Renderer::getInstancia().camara.Tilt(-5);
+    // }
     //PAG::Gui::getInstancia().consola->NuevoMensaje("Key callback called");
 }
 
 // Esta función callback será llamada cada vez que se pulse algún botón
 // del ratón sobre el área de dibujo OpenGL.
 void mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
-    if (action == GLFW_PRESS) {
-        //PAG::Gui::getInstancia().consola->NuevoMensaje("Pulsado el boton: " + std::to_string(button));
-    } else if (action == GLFW_RELEASE) {
-        //PAG::Gui::getInstancia().consola->NuevoMensaje("Soltado el boton: " + std::to_string(button));
-    }
+    ///Cambiar el color del fondo al mover la rueda del ratón
+
 }
 
 // Esta función callback será llamada cada vez que se mueva la rueda
@@ -63,14 +71,15 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
     const int r = 0 + rand() % 10;
     const int g = 0 + rand() % 10;
     const int b = 0 + rand() % 10;
-    //PAG::Renderer::getInstancia().CambiarColorFondo(r / 10.0, g / 10.0, b / 10.0, 1.0);
-    //PAG::Gui::getInstancia().consola->NuevoMensaje("Movida la rueda del raton. Cambiando color de fondo a" + std::to_string(r) + " " + std::to_string(g) + " " + std::to_string(b));
+    PAG::Renderer::getInstancia().CambiarColorFondo(r / 10.0, g / 10.0, b / 10.0, 1.0);
+    PAG::Gui::getInstancia().consola->NuevoMensaje("Movida la rueda del raton. Cambiando color de fondo a" + std::to_string(r) + " " + std::to_string(g) + " " + std::to_string(b));
 }
 
 int main() {
+
     // Rutas de los shaders TODO cambiar a un archivo de configuración y ser capaz de leer varios shaders
     std::string nombreArchivo = "pag03";
-
+    PAG::Gui::getInstancia().asignarCamara(&PAG::Renderer::getInstancia().camara);
     PAG::Gui::getInstancia().consola->NuevoMensaje("Starting Application PAG-Prueba 01");
     //-Este callback hay que registrarlo ANTES de llamar a glfwInit
     glfwSetErrorCallback((GLFWerrorfun) error_callback);
@@ -122,23 +131,12 @@ int main() {
     // Inicializamos OpenGL,imgui y cargamos los shaders
     PAG::Renderer::getInstancia().inicializaOpenGL();
     PAG::Gui::getInstancia().StartGui(window);
-    // try {
-    //    // PAG::Renderer::getInstancia().enlazarShaderProgram(nombreArchivo);
-    // } catch (std::exception &e) {
-    //     PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
-    // }
-    //
-    // try {
-    //     //PAG::Renderer::getInstancia().creaModeloEntrelazado();
-    // }catch (std::exception &e) {
-    //     PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
-    // }
+
     // Ciclo de eventos de la aplicación.
     while (!glfwWindowShouldClose(window)) {
         // Borra los buffers (color y profundidad)
         PAG::Renderer::getInstancia().refrescar();
         PAG::Gui::getInstancia().RefrescarFrame();
-
         // Hace el SWAP del doble buffer
         glfwSwapBuffers(window);
 

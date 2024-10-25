@@ -65,5 +65,31 @@ Despues, desde la clase TextBox, se llama (con el nombre del archivo) al program
 
 
 # Practica 5
-Cambios a la practica anterior, se ha desacoplado el shader y el shader program, separandolos cada uno en su propia clase y llevandolo mejor, el UML despues del cambio es:
-> TODO: Añadir UML
+Se ha añadido la Camara y los tipos de movimiento enseñados en clase, siendo estos:
+* Zoom
+* Pan
+* Orbit
+* Crane
+* Dolly
+* Truck
+
+Se han hecho cambios al shader para poder manejar la camara.
+Además, se han añadido los controles de la camara en una interfaz de imgui, parecida a la usada en clase.
+
+Instrucciones:
+Al ejecutar la aplicacion, primero debes cargar un shader (El shader de ejemplo es "Pag03")
+Desde la ventana para cargar los shaders. con poner Pag03 es suficiente. 
+
+Una vez cargado, puedes empezar a usar la camara.
+Esto puedes hacerlo desde la ventana de imgui donde se encuentran los movimientos.
+
+
+Cada opción de las anteriores tiene sus propios controles adaptados y pueden usarse de manera intuitiva. por lo general son simplemente
+botones que debes pulsar para activar el movimiento.
+
+Ademas de esto, se ha añadido un boton para resetear la camara a su posicion inicial.
+
+Aquí dejo el UML de la practica 5:
+![PAG.jpg](Assets%2FPAG.jpg)
+
+TODO: movimiento con ratón, utilizar el renderer para realizar los movimientos en vez de llamar directamente a la camara.

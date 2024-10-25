@@ -14,8 +14,8 @@
 
 #include "ColorPicker.h"
 #include "Consola.h"
+#include "SelectorMovimiento.h"
 #include "TextBox.h"
-
 namespace PAG {
     class TextBox;
 
@@ -24,13 +24,14 @@ private:
     static Gui *instancia; ///< Instancia única de la clase
     Gui();
 public:
+    SelectorMovimiento* selectorMovimiento;
     Consola* consola;
     ColorPicker* colorPicker;
     TextBox* textBox;
     virtual ~Gui();
     static Gui &getInstancia();
     void StartGui(GLFWwindow *window);
-
+    void asignarCamara(Camera *camara);
     void EndGui();
 
     void RefrescarFrame();

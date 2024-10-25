@@ -11,6 +11,7 @@ namespace PAG {
     //Constructor por defecto
     Renderer::Renderer() {
         shaderProgram = nullptr;
+        camara = Camera();
     }
 
 
@@ -47,6 +48,7 @@ namespace PAG {
             glUseProgram ( shaderProgram->getIdSP() );
             glBindVertexArray ( idVAO );
             glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, idIBO );
+            glUniformMatrix4fv ( glGetUniformLocation ( shaderProgram->getIdSP(), "matrizMVP" ), 1, GL_FALSE, glm::value_ptr(camara.getMVP()) );
             glDrawElements ( GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr );
         }
     }
@@ -124,4 +126,14 @@ namespace PAG {
         shaderProgram->ObtenShaders(nombreArchivo);
         creaModeloEntrelazado();
     }
+
+    void Renderer::setCamera(const Camera& camera) {
+        this->viewMatrix = camera.getViewMatrix();
+        this->projectionMatrix = camera.getProjectionMatrix();
+    }
+
+    Camera Renderer::getCamara() {
+        return camara;
+    }
+
 } // PAG

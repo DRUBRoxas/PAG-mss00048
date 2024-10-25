@@ -5,6 +5,7 @@ project(PruebaGraficas)
 
 find_package(glad)
 find_package(glfw3)
+find_package(glm)
 file( GLOB IMGUI Interfaz/imgui/*cpp)
 # Then, link your executable or library with the corresponding package targets:
 add_executable(PruebaGraficas main.cpp
@@ -21,10 +22,16 @@ add_executable(PruebaGraficas main.cpp
         Interfaz/TextBox.cpp
         Interfaz/TextBox.h
         Renderizado/Shader.cpp
-        Renderizado/Shader.h)
+        Renderizado/Shader.h
+        Camera.cpp
+        Camera.h
+        Interfaz/SelectorMovimiento.cpp
+        Interfaz/SelectorMovimiento.h
+        Interfaz/Movimiento.h)
 
 target_link_libraries(PruebaGraficas glad::glad)
 target_link_libraries(PruebaGraficas glfw)
+target_link_libraries(PruebaGraficas glm::glm)
 
 set(CMAKE_CXX_STANDARD 20)
 

@@ -4,14 +4,13 @@
 
 #include "Gui.h"
 
-
-
 namespace PAG {
     Gui *Gui::instancia = nullptr;
     Gui::Gui() {
         consola = new Consola;
         colorPicker = new ColorPicker;
         textBox = new TextBox;
+        selectorMovimiento= new SelectorMovimiento;
     }
 
     Gui::~Gui() {
@@ -50,11 +49,14 @@ namespace PAG {
         consola->RefrescarConsola();
         colorPicker->RefrescarColorPicker();
         textBox->RefrescarTextBox();
+        selectorMovimiento->RefrescarSelector();
         // Aquí va el dibujado de la escena con instrucciones OpenGL
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData ( ImGui::GetDrawData() );
     }
 
-
+    void Gui::asignarCamara(Camera *camara) {
+        selectorMovimiento->setCamera(camara);
+    }
 
 } // PAG
