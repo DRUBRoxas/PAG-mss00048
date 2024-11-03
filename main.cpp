@@ -8,6 +8,7 @@
 #include "Interfaz/Gui.h"
 #include "Renderizado/Renderer.h"
 #include "Interfaz/imgui/imgui.h"
+#include "Modelado/Modelo.h"
 
 //Constantes
 // Esta función callback será llamada cuando GLFW produzca algún error
@@ -77,8 +78,12 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 
 int main() {
 
-    // Rutas de los shaders TODO cambiar a un archivo de configuración y ser capaz de leer varios shaders
-    std::string nombreArchivo = "pag03";
+    /*
+     *TODO:
+     * Cambiar el uso de los movimientos de la cámara fuera de la interfaz
+     * Crear un sistema de carga de modelos
+     *
+     */
     PAG::Gui::getInstancia().asignarCamara(&PAG::Renderer::getInstancia().camara);
     PAG::Gui::getInstancia().consola->NuevoMensaje("Starting Application PAG-Prueba 01");
     //-Este callback hay que registrarlo ANTES de llamar a glfwInit
@@ -131,6 +136,15 @@ int main() {
     // Inicializamos OpenGL,imgui y cargamos los shaders
     PAG::Renderer::getInstancia().inicializaOpenGL();
     PAG::Gui::getInstancia().StartGui(window);
+
+    // Prueba de modelo
+    std::string nombreArchivo = "vaca.obj";
+    try {
+        PAG::Modelo modelo(nombreArchivo);
+    } catch (std::runtime_error &e) {
+        PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
+    }
+
 
     // Ciclo de eventos de la aplicación.
     while (!glfwWindowShouldClose(window)) {

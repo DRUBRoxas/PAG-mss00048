@@ -4,6 +4,7 @@
 
 #include "Renderer.h"
 
+
 namespace PAG {
     Renderer *Renderer::instancia = nullptr;
     //guardamos las coordenadas RGBA del color de fondo
@@ -12,6 +13,7 @@ namespace PAG {
     Renderer::Renderer() {
         shaderProgram = nullptr;
         camara = Camera();
+        modelo = new Modelo("./Modelos/Panther.obj");
     }
 
 
@@ -20,15 +22,6 @@ namespace PAG {
         if (instancia) {
             delete instancia;
             instancia = nullptr;
-        }
-        if ( idVBO != 0 )
-        { glDeleteBuffers ( 1, &idVBO );
-        }
-        if ( idIBO != 0 )
-        { glDeleteBuffers ( 1, &idIBO );
-        }
-        if ( idVAO != 0 )
-        { glDeleteVertexArrays ( 1, &idVAO );
         }
     }
 
@@ -46,10 +39,10 @@ namespace PAG {
         if(shaderProgram != nullptr){
             glPolygonMode ( GL_FRONT_AND_BACK, GL_FILL );
             glUseProgram ( shaderProgram->getIdSP() );
-            glBindVertexArray ( idVAO );
-            glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, idIBO );
+            glBindVertexArray ( *modelo->get_id_vao() );
+            glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, *modelo->get_id_ibo() );
             glUniformMatrix4fv ( glGetUniformLocation ( shaderProgram->getIdSP(), "matrizMVP" ), 1, GL_FALSE, glm::value_ptr(camara.getMVP()) );
-            glDrawElements ( GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr );
+            glDrawElements ( GL_TRIANGLES, modelo->malla->mNumFaces*3, GL_UNSIGNED_INT, nullptr);
         }
     }
 
@@ -89,33 +82,33 @@ namespace PAG {
         glEnable ( GL_MULTISAMPLE );
     }
 
-    void PAG::Renderer::creaModeloEntrelazado() {
-        GLfloat vertices[] = {
-            // Positions        // Colors
-            -0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
-             0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-             0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
-        };
-
-        GLuint indices[] = { 0, 1, 2 };
-
-        glGenVertexArrays(1, &idVAO);
-        glBindVertexArray(idVAO);
-
-        glGenBuffers(1, &idVBO);
-        glBindBuffer(GL_ARRAY_BUFFER, idVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
-        glEnableVertexAttribArray(0);
-
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-        glEnableVertexAttribArray(1);
-
-        glGenBuffers(1, &idIBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    }
+    // void PAG::Renderer::creaModeloEntrelazado() {
+    //     GLfloat vertices[] = {
+    //         // Positions        // Colors
+    //         -0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+    //          0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
+    //          0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f
+    //     };
+    //
+    //     GLuint indices[] = { 0, 1, 2 };
+    //
+    //     glGenVertexArrays(1, &idVAO);
+    //     glBindVertexArray(idVAO);
+    //
+    //     glGenBuffers(1, &idVBO);
+    //     glBindBuffer(GL_ARRAY_BUFFER, idVBO);
+    //     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    //
+    //     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+    //     glEnableVertexAttribArray(0);
+    //
+    //     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+    //     glEnableVertexAttribArray(1);
+    //
+    //     glGenBuffers(1, &idIBO);
+    //     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIBO);
+    //     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    // }
 
     void Renderer::enlazarShaderProgram(std::string nombreArchivo) {
         if(shaderProgram!=nullptr){
@@ -124,7 +117,7 @@ namespace PAG {
         }
         shaderProgram = new ProgramShader();
         shaderProgram->ObtenShaders(nombreArchivo);
-        creaModeloEntrelazado();
+        creaModelo();
     }
 
     void Renderer::setCamera(const Camera& camera) {
@@ -136,4 +129,33 @@ namespace PAG {
         return camara;
     }
 
+    void PAG::Renderer::creaModelo() {
+        std::vector <GLfloat> vertices = modelo->getVertices();
+        std::vector <GLuint> indices = modelo->getIndices();
+        std::vector <GLfloat> colores = modelo->getColores();
+
+        glGenVertexArrays(1, modelo->get_id_vao());
+        glBindVertexArray(*modelo->get_id_vao());
+
+        glGenBuffers(1, modelo->get_id_vbo());
+        glBindBuffer(GL_ARRAY_BUFFER, *modelo->get_id_vbo());
+        glBufferData(GL_ARRAY_BUFFER, vertices.size()*sizeof(GLfloat), vertices.data(), GL_STATIC_DRAW);
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (void*)0);
+        glEnableVertexAttribArray(0);
+
+        //Color
+        GLuint colorVBO;
+        glGenBuffers(1, &colorVBO);
+        glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
+        glBufferData(GL_ARRAY_BUFFER, colores.size()*sizeof(GLfloat), colores.data(), GL_STATIC_DRAW);
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4*sizeof(GLfloat), nullptr);
+        glEnableVertexAttribArray(1);
+
+
+        glGenBuffers(1, modelo->get_id_ibo());
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *modelo->get_id_ibo());
+        //Puede fallar aquí
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size()*sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
+    }
 } // PAG

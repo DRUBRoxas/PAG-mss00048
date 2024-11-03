@@ -12,6 +12,9 @@
 #include <sstream>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/fwd.hpp>
+#include "../Modelado/Modelo.h"
+#include <assimp/mesh.h>
+#include <assimp/vector3.h>
 
 #include "ProgramShader.h"
 #include "../Camera.h"
@@ -30,13 +33,11 @@ namespace PAG {
      */
     class Renderer {
     private:
-        GLuint idVAO = 0; // Identificador del vertex array object
-        GLuint idVBO = 0; // Identificador del vertex buffer object
-        GLuint idIBO = 0; // Identificador del index buffer object
 
         //Variables para almacenar el código fuente de los shaders
         std::string fuenteVS; // Código fuente del vertex shader
         std::string fuenteFS; // Código fuente del fragment shader
+
 
         PAG::ProgramShader *shaderProgram; // Shader program
         bool exito=false; // Para saber si se ha cargado correctamente el shader program
@@ -52,6 +53,7 @@ namespace PAG {
 
     public:
         Camera camara; // Cámara de la escena
+        Modelo *modelo;
         virtual ~Renderer();
         static Renderer &getInstancia();
         void refrescar();
@@ -71,6 +73,8 @@ namespace PAG {
         void setCamera(const Camera &camera);
 
         Camera getCamara();
+
+        void creaModelo();
     };
 } // PAG
 
