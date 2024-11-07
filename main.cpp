@@ -69,17 +69,62 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
         PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/vaca.obj"));
         PAG::Renderer::getInstancia().creaModelos();
     }
+    //Borrar modelos con las teclas del teclado
     if (key == GLFW_KEY_7 && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().borraModelo("Modelos/mandalorian.obj");
+        PAG::Renderer::getInstancia().borraModelo("Modelos/Ajax.obj");
     }
-    // //boton arriba tilt + boton abajo tilt -
-    // if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
-    //     PAG::Renderer::getInstancia().camara.Tilt(5);
-    // }
-    // if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
-    //     PAG::Renderer::getInstancia().camara.Tilt(-5);
-    // }
-    //PAG::Gui::getInstancia().consola->NuevoMensaje("Key callback called");
+    if (key == GLFW_KEY_8 && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().borraModelo("Modelos/dado.obj");
+    }
+    if (key == GLFW_KEY_9 && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().borraModelo("Modelos/mandalorian,obj");
+    }
+    if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().borraModelo("Modelos/panther.obj");
+    }
+    if (key == GLFW_KEY_MINUS && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().borraModelo("Modelos/t-rex.obj");
+    }
+    if (key == GLFW_KEY_EQUAL && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().borraModelo("Modelos/vaca.obj");
+    }
+
+    //Flechas para mover el modelo 0 (TODO: Cambiar al modelo seleccionado)
+    if(key== GLFW_KEY_LEFT && action == GLFW_PRESS){
+        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(-1.0f,0.0f,0.0f)));
+    }
+    if(key== GLFW_KEY_RIGHT && action == GLFW_PRESS){
+        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(1.0f,0.0f,0.0f)));
+    }
+    if(key== GLFW_KEY_UP && action == GLFW_PRESS){
+        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.0f,1.0f,0.0f)));
+    }
+    if(key== GLFW_KEY_DOWN && action == GLFW_PRESS){
+        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.0f,-1.0f,0.0f)));
+    }
+
+    //Flechas para rotar el modelo 0 (TODO: Cambiar al modelo seleccionado)
+    //TODO: Comprobar rotacion con Fran o con Angel Luis, esto creo que está mal
+    if(key== GLFW_KEY_K && action == GLFW_PRESS){
+        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(10.0f),glm::vec3(0.0f,0.0f,1.0f)));
+    }
+    if(key== GLFW_KEY_L && action == GLFW_PRESS){
+        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(-10.0f),glm::vec3(0.0f,0.0f,1.0f)));
+    }
+    if(key== GLFW_KEY_I && action == GLFW_PRESS){
+        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(10.0f),glm::vec3(1.0f,0.0f,0.0f)));
+    }
+    if(key== GLFW_KEY_O && action == GLFW_PRESS){
+        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(-10.0f),glm::vec3(1.0f,0.0f,0.0f)));
+    }
+
+    //Flechas para escalar el modelo 0 (TODO: Cambiar al modelo seleccionado)
+    if(key== GLFW_KEY_N && action == GLFW_PRESS){
+        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::scale(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(1.1f,1.1f,1.1f)));
+    }
+    if(key== GLFW_KEY_M && action == GLFW_PRESS){
+        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::scale(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.9f,0.9f,0.9f)));
+    }
 }
 
 // Esta función callback será llamada cada vez que se pulse algún botón

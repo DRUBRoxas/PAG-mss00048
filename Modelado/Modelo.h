@@ -12,6 +12,7 @@
 #include <vector>
 #include <glad/glad.h>
 #include <GL/gl.h>
+#include <glm/glm.hpp>
 
 namespace PAG {
     class Shader;
@@ -32,16 +33,18 @@ public:
     GLuint* get_id_ibo();
 
     std::vector<GLfloat> getVertices();
-        std::vector<GLuint> getIndices();
-
+    std::vector<GLuint> getIndices();
     std::vector<GLfloat> getColores();
-
+    // Nueva función para obtener y modificar la matriz de transformación
+    glm::mat4 getTransformacion() const { return transformacion; }
+    void setTransformacion(const glm::mat4& t) { transformacion = t; }
 
 private:
     std::string directorio;
     GLuint idVAO = 0; // Identificador del vertex array object
     GLuint idVBO = 0; // Identificador del vertex buffer object
     GLuint idIBO = 0; // Identificador del index buffer object
+    glm::mat4 transformacion = glm::mat4(1.0f);
 
 
     void cargarModelo(std::string ruta);

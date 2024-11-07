@@ -29,7 +29,8 @@ namespace PAG {
         return *instancia;
     }
 
-    // Método que hace el refresco de la escena
+    // Renderer.cpp
+
     void Renderer::refrescar() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         if (shaderProgram != nullptr) {
@@ -37,14 +38,19 @@ namespace PAG {
             glUseProgram(shaderProgram->getIdSP());
             for (Modelo* modelo : modelos) {
                 if (modelo && modelo->get_id_vao() && modelo->get_id_ibo()) {
+                    // Crear la matriz MVP para el modelo actual
+                    glm::mat4 mvp = camara.getProjectionMatrix() * camara.getViewMatrix() * modelo->getTransformacion();
                     glBindVertexArray(*modelo->get_id_vao());
                     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *modelo->get_id_ibo());
-                    glUniformMatrix4fv(glGetUniformLocation(shaderProgram->getIdSP(), "matrizMVP"), 1, GL_FALSE, glm::value_ptr(camara.getMVP()));
+                    // Enviar la matriz MVP al shader
+                    glUniformMatrix4fv(glGetUniformLocation(shaderProgram->getIdSP(), "matrizMVP"), 1, GL_FALSE, glm::value_ptr(mvp));
+                    // Dibujar el modelo
                     glDrawElements(GL_TRIANGLES, modelo->malla->mNumFaces * 3, GL_UNSIGNED_INT, nullptr);
                 }
             }
         }
     }
+
 
     void Renderer::ResizeVentana(int ancho, int alto) {
         glViewport(0, 0, ancho, alto);
