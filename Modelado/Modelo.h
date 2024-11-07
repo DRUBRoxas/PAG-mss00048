@@ -18,8 +18,9 @@ namespace PAG {
 
     class Modelo {
 public:
+    std::string nombreModelo;
     Assimp::Importer importador;
-    aiMesh *malla;
+    aiMesh *malla=nullptr;
     Modelo(std::string ruta);
     void Dibujar(Shader &shader);
     ~Modelo();
@@ -34,6 +35,7 @@ public:
         std::vector<GLuint> getIndices();
 
     std::vector<GLfloat> getColores();
+
 
 private:
     std::string directorio;

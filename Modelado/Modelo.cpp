@@ -6,6 +6,8 @@
 
 namespace PAG {
     Modelo::Modelo(std::string ruta) {
+        //Guardar el nombre del modelo para su eliminación más adelante
+        nombreModelo = ruta;
         cargarModelo(ruta);
     }
     Modelo::~Modelo() {
@@ -33,11 +35,10 @@ namespace PAG {
     }
 
     void Modelo::cargarModelo(std::string ruta) {
-        const aiScene *escena = importador.ReadFile(ruta, aiProcess_Triangulate | aiProcess_FlipUVs);
+        const aiScene *escena = importador.ReadFile(ruta, aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_GenSmoothNormals);
         if (!escena || escena->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !escena->mRootNode) {
             return;
         }
-        directorio = ruta.substr(0, ruta.find_last_of('/'));
         malla=escena->mMeshes[0];
     }
 

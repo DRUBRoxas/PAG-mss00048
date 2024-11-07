@@ -44,6 +44,34 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 
+    //Cargar modelos con las teclas del teclado
+    if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/Ajax.obj"));
+        PAG::Renderer::getInstancia().creaModelos();
+    }
+    if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/dado.obj"));
+        PAG::Renderer::getInstancia().creaModelos();
+    }
+    if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/mandalorian.obj"));
+        PAG::Renderer::getInstancia().creaModelos();
+    }
+    if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/panther.obj"));
+        PAG::Renderer::getInstancia().creaModelos();
+    }
+    if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/t-rex.obj"));
+        PAG::Renderer::getInstancia().creaModelos();
+    }
+    if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/vaca.obj"));
+        PAG::Renderer::getInstancia().creaModelos();
+    }
+    if (key == GLFW_KEY_7 && action == GLFW_PRESS) {
+        PAG::Renderer::getInstancia().borraModelo("Modelos/mandalorian.obj");
+    }
     // //boton arriba tilt + boton abajo tilt -
     // if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
     //     PAG::Renderer::getInstancia().camara.Tilt(5);
@@ -136,16 +164,6 @@ int main() {
     // Inicializamos OpenGL,imgui y cargamos los shaders
     PAG::Renderer::getInstancia().inicializaOpenGL();
     PAG::Gui::getInstancia().StartGui(window);
-
-    // Prueba de modelo
-    std::string nombreArchivo = "vaca.obj";
-    try {
-        PAG::Modelo modelo(nombreArchivo);
-    } catch (std::runtime_error &e) {
-        PAG::Gui::getInstancia().consola->NuevoMensaje(e.what());
-    }
-
-
     // Ciclo de eventos de la aplicación.
     while (!glfwWindowShouldClose(window)) {
         // Borra los buffers (color y profundidad)

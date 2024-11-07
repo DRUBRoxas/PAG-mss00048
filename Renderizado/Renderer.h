@@ -53,7 +53,7 @@ namespace PAG {
 
     public:
         Camera camara; // Cámara de la escena
-        Modelo *modelo;
+        std::vector<Modelo*> modelos;
         virtual ~Renderer();
         static Renderer &getInstancia();
         void refrescar();
@@ -74,7 +74,9 @@ namespace PAG {
 
         Camera getCamara();
 
-        void creaModelo();
+        void borraModelo(std::string ruta);
+
+        void creaModelos();
     };
 } // PAG
 
