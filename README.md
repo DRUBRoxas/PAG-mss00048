@@ -92,4 +92,24 @@ Ademas de esto, se ha añadido un boton para resetear la camara a su posicion in
 Aquí dejo el UML de la practica 5:
 ![PAG.jpg](Assets%2FPAG.jpg)
 
-TODO: movimiento con ratón, utilizar el renderer para realizar los movimientos en vez de llamar directamente a la camara.
+# Practica 6
+Se ha añadido a los modelos la posibilidad de transformarlos, rotarlos y escalarlos.
+Actualmente usamos para ello las teclas siguientes en el teclado (No se si me dara tiempo a implementarlo en el gui)
+Traslación:
+Flecha Arriba: Mover hacia arriba
+Flecha Abajo: Mover hacia abajo
+Flecha Izquierda: Mover hacia la izquierda
+Flecha Derecha: Mover hacia la derecha
+
+Rotación:
+W: Rotar hacia arriba
+S: Rotar hacia abajo
+A: Rotar hacia la izquierda
+D: Rotar hacia la derecha
+
+Escalado:
+Z: Escalar hacia arriba
+X: Escalar hacia abajo
+
+Se ha utilizado la biblioteca Assimp para cargar modelos, así como imfilebrowser para cargar los modelos desde el explorador de archivos.
+En el renderer ahora se pueden tener varios modelos cargados a la vez,eliminarlos, y se pueden transformar de manera independiente.

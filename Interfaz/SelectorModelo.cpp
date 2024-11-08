@@ -4,7 +4,6 @@
 
 #include "SelectorModelo.h"
 
-#include "imgui/imgui.h"
 
 namespace PAG {
     SelectorModelo::SelectorModelo() {
@@ -40,6 +39,9 @@ namespace PAG {
     }
 
     int SelectorModelo::getModeloSeleccionado() {
+        if (modelos.size()==0) {
+            return -1;
+        }
         return modeloSeleccionado;
     }
 

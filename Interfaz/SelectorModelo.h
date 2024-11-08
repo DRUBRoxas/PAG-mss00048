@@ -6,6 +6,7 @@
 #define SELECTORMODELO_H
 #include <string>
 #include <vector>
+#include "imgui/imgui.h"
 
 namespace PAG {
 

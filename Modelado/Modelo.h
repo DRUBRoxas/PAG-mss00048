@@ -45,8 +45,6 @@ private:
     GLuint idVBO = 0; // Identificador del vertex buffer object
     GLuint idIBO = 0; // Identificador del index buffer object
     glm::mat4 transformacion = glm::mat4(1.0f);
-
-
     void cargarModelo(std::string ruta);
 
 };

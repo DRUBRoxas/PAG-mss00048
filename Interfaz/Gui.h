@@ -17,6 +17,7 @@
 #include "SelectorModelo.h"
 #include "SelectorMovimiento.h"
 #include "TextBox.h"
+#include "TransformadorModelo.h"
 #include "VentanaArchivos.h"
 
 namespace PAG {
@@ -33,6 +34,7 @@ public:
     TextBox* textBox;
     VentanaArchivos* ventanaArchivos;
     SelectorModelo* selectorModelo;
+    TransformadorModelo* transformadorModelo;
     virtual ~Gui();
     static Gui &getInstancia();
     void StartGui(GLFWwindow *window);

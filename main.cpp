@@ -44,17 +44,8 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
-    //Borrar modelo seleccionado con tecla b
-    if(key== GLFW_KEY_B && action == GLFW_PRESS){
-        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Renderer::getInstancia().borraModelo(modelo);
-        std::vector<std::string> nombresModelos = PAG::Renderer::getInstancia().obtenerNombresModelos();
-        PAG::Gui::getInstancia().selectorModelo->setModelos(nombresModelos);
-        PAG::Gui::getInstancia().selectorModelo->setModeloSeleccionado(-1);
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Modelo borrado");
-    }
 
-    //Flechas para mover el modelo 0 (TODO: Cambiar al modelo seleccionado)
+    //Flechas para mover el modelo Seleccionado en el gui
     if(key== GLFW_KEY_LEFT && action == GLFW_PRESS){
         int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
         PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(-1.0f,0.0f,0.0f)));
@@ -72,27 +63,33 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
         PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.0f,-1.0f,0.0f)));
     }
 
-    //Flechas para rotar el modelo 0 (TODO: Cambiar al modelo seleccionado)
+    //Flechas para rotar el modelo Seleccionado
     //TODO: Comprobar rotacion con Fran o con Angel Luis, esto creo que está mal
-    if(key== GLFW_KEY_K && action == GLFW_PRESS){
-        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(10.0f),glm::vec3(0.0f,0.0f,1.0f)));
+    if(key== GLFW_KEY_A && action == GLFW_PRESS){
+        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(10.0f),glm::vec3(0.0f,0.0f,1.0f)));
     }
-    if(key== GLFW_KEY_L && action == GLFW_PRESS){
-        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(-10.0f),glm::vec3(0.0f,0.0f,1.0f)));
+    if(key== GLFW_KEY_D && action == GLFW_PRESS){
+        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(-10.0f),glm::vec3(0.0f,0.0f,1.0f)));
     }
-    if(key== GLFW_KEY_I && action == GLFW_PRESS){
-        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(10.0f),glm::vec3(1.0f,0.0f,0.0f)));
+    if(key== GLFW_KEY_W && action == GLFW_PRESS){
+        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(10.0f),glm::vec3(1.0f,0.0f,0.0f)));
     }
-    if(key== GLFW_KEY_O && action == GLFW_PRESS){
-        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(-10.0f),glm::vec3(1.0f,0.0f,0.0f)));
+    if(key== GLFW_KEY_S && action == GLFW_PRESS){
+        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(-10.0f),glm::vec3(1.0f,0.0f,0.0f)));
     }
 
     //Flechas para escalar el modelo 0 (TODO: Cambiar al modelo seleccionado)
-    if(key== GLFW_KEY_N && action == GLFW_PRESS){
-        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::scale(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(1.1f,1.1f,1.1f)));
+    if(key== GLFW_KEY_Z && action == GLFW_PRESS){
+        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::scale(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(1.1f,1.1f,1.1f)));
     }
-    if(key== GLFW_KEY_M && action == GLFW_PRESS){
-        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::scale(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.9f,0.9f,0.9f)));
+    if(key== GLFW_KEY_X && action == GLFW_PRESS){
+        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::scale(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.9f,0.9f,0.9f)));
     }
 }
 
@@ -138,6 +135,14 @@ void ComprobarBorradoModelo() {
         PAG::Gui::getInstancia().selectorModelo->setModeloSeleccionado(-1);
         PAG::Gui::getInstancia().selectorModelo->setModeloBorrar(-1);
         PAG::Gui::getInstancia().consola->NuevoMensaje("Modelo borrado");
+    }
+}
+
+void ComprobarTransformacionesModelo() {
+    if(PAG::Gui::getInstancia().transformadorModelo->transformacionAplicada) {
+        glm::mat4 transformacion = PAG::Gui::getInstancia().transformadorModelo->getTransformacion();
+        int modelo = PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(transformacion);
     }
 }
 
@@ -209,6 +214,7 @@ int main() {
         PAG::Gui::getInstancia().RefrescarFrame();
         ComprobarArchivosModelos();
         ComprobarBorradoModelo();
+        ComprobarTransformacionesModelo();
         // Hace el SWAP del doble buffer
         glfwSwapBuffers(window);
 
