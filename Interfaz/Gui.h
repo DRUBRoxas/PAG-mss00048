@@ -16,6 +16,8 @@
 #include "Consola.h"
 #include "SelectorMovimiento.h"
 #include "TextBox.h"
+#include "VentanaArchivos.h"
+
 namespace PAG {
     class TextBox;
 
@@ -28,6 +30,7 @@ public:
     Consola* consola;
     ColorPicker* colorPicker;
     TextBox* textBox;
+    VentanaArchivos* ventanaArchivos;
     virtual ~Gui();
     static Gui &getInstancia();
     void StartGui(GLFWwindow *window);

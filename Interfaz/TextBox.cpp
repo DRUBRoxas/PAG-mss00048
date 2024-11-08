@@ -29,7 +29,7 @@ namespace PAG {
     void TextBox::RefrescarTextBox() {
         ImGui::SetNextWindowPos(ImVec2(100, 400), ImGuiCond_Once);
         ImGui::SetNextWindowSize(ImVec2(200, 75), ImGuiCond_Once);
-        if (ImGui::Begin("SeleccionadorShaderProgram")) {
+        if (ImGui::Begin("Seleccionador Shader Program")) {
             // La ventana está desplegada
             ImGui::SetWindowFontScale(1.0f); // Escalamos el texto si fuera necesario
             ImGui::InputText("##", &name, ImGuiInputTextFlags_AutoSelectAll);

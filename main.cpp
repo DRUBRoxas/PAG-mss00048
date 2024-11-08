@@ -5,6 +5,7 @@
 #include <glm/vec3.hpp>
 
 #include "Camera.h"
+#include "Camera.h"
 #include "Interfaz/Gui.h"
 #include "Renderizado/Renderer.h"
 #include "Interfaz/imgui/imgui.h"
@@ -44,31 +45,31 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 
-    //Cargar modelos con las teclas del teclado
-    if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/Ajax.obj"));
-        PAG::Renderer::getInstancia().creaModelos();
-    }
-    if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/dado.obj"));
-        PAG::Renderer::getInstancia().creaModelos();
-    }
-    if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/mandalorian.obj"));
-        PAG::Renderer::getInstancia().creaModelos();
-    }
-    if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/panther.obj"));
-        PAG::Renderer::getInstancia().creaModelos();
-    }
-    if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/t-rex.obj"));
-        PAG::Renderer::getInstancia().creaModelos();
-    }
-    if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/vaca.obj"));
-        PAG::Renderer::getInstancia().creaModelos();
-    }
+    // //Cargar modelos con las teclas del teclado
+    // if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/Ajax.obj"));
+    //     PAG::Renderer::getInstancia().creaModelos();
+    // }
+    // if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/dado.obj"));
+    //     PAG::Renderer::getInstancia().creaModelos();
+    // }
+    // if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
+    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/mandalorian.obj"));
+    //     PAG::Renderer::getInstancia().creaModelos();
+    // }
+    // if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
+    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/panther.obj"));
+    //     PAG::Renderer::getInstancia().creaModelos();
+    // }
+    // if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
+    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/t-rex.obj"));
+    //     PAG::Renderer::getInstancia().creaModelos();
+    // }
+    // if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
+    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/vaca.obj"));
+    //     PAG::Renderer::getInstancia().creaModelos();
+    // }
     //Borrar modelos con las teclas del teclado
     if (key == GLFW_KEY_7 && action == GLFW_PRESS) {
         PAG::Renderer::getInstancia().borraModelo("Modelos/Ajax.obj");
@@ -149,6 +150,15 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
     PAG::Gui::getInstancia().consola->NuevoMensaje("Movida la rueda del raton. Cambiando color de fondo a" + std::to_string(r) + " " + std::to_string(g) + " " + std::to_string(b));
 }
 
+void ComprobarArchivosModelos() {
+    std::string pathModelo=PAG::Gui::getInstancia().ventanaArchivos->getPath();
+    if(!pathModelo.empty()){
+        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo(pathModelo));
+        PAG::Renderer::getInstancia().creaModelos();
+        PAG::Gui::getInstancia().ventanaArchivos->ClearPath();
+    }
+}
+
 int main() {
 
     /*
@@ -209,11 +219,13 @@ int main() {
     // Inicializamos OpenGL,imgui y cargamos los shaders
     PAG::Renderer::getInstancia().inicializaOpenGL();
     PAG::Gui::getInstancia().StartGui(window);
+    PAG::Renderer::getInstancia().enlazarShaderProgram("pag03");
     // Ciclo de eventos de la aplicación.
     while (!glfwWindowShouldClose(window)) {
         // Borra los buffers (color y profundidad)
         PAG::Renderer::getInstancia().refrescar();
         PAG::Gui::getInstancia().RefrescarFrame();
+        ComprobarArchivosModelos();
         // Hace el SWAP del doble buffer
         glfwSwapBuffers(window);
 
@@ -229,3 +241,4 @@ int main() {
     window = nullptr;
     glfwTerminate(); // Liberamos los recursos que ocupaba GLFW.
 }
+
