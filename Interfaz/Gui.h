@@ -14,6 +14,7 @@
 
 #include "ColorPicker.h"
 #include "Consola.h"
+#include "SelectorModelo.h"
 #include "SelectorMovimiento.h"
 #include "TextBox.h"
 #include "VentanaArchivos.h"
@@ -31,6 +32,7 @@ public:
     ColorPicker* colorPicker;
     TextBox* textBox;
     VentanaArchivos* ventanaArchivos;
+    SelectorModelo* selectorModelo;
     virtual ~Gui();
     static Gui &getInstancia();
     void StartGui(GLFWwindow *window);

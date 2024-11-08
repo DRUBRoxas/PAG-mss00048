@@ -12,6 +12,7 @@ namespace PAG {
         textBox = new TextBox;
         selectorMovimiento= new SelectorMovimiento;
         ventanaArchivos = new VentanaArchivos;
+        selectorModelo = new SelectorModelo;
     }
 
     Gui::~Gui() {
@@ -52,6 +53,7 @@ namespace PAG {
         textBox->RefrescarTextBox();
         selectorMovimiento->RefrescarSelector();
         ventanaArchivos->RefrescarVentanaArchivos();
+        selectorModelo->RefrescarSelectorModelo();
         // Aquí va el dibujado de la escena con instrucciones OpenGL
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData ( ImGui::GetDrawData() );

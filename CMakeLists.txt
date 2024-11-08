@@ -33,6 +33,9 @@ add_executable(PruebaGraficas main.cpp
         Modelado/Modelo.h
         Interfaz/VentanaArchivos.cpp
         Interfaz/VentanaArchivos.h
+        imfilebrowser.h
+        Interfaz/SelectorModelo.cpp
+        Interfaz/SelectorModelo.h
 )
 link_directories("./assimp/lib")
 target_link_libraries(PruebaGraficas glad::glad "-static")

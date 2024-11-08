@@ -44,64 +44,32 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
-
-    // //Cargar modelos con las teclas del teclado
-    // if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
-    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/Ajax.obj"));
-    //     PAG::Renderer::getInstancia().creaModelos();
-    // }
-    // if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
-    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/dado.obj"));
-    //     PAG::Renderer::getInstancia().creaModelos();
-    // }
-    // if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
-    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/mandalorian.obj"));
-    //     PAG::Renderer::getInstancia().creaModelos();
-    // }
-    // if (key == GLFW_KEY_4 && action == GLFW_PRESS) {
-    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/panther.obj"));
-    //     PAG::Renderer::getInstancia().creaModelos();
-    // }
-    // if (key == GLFW_KEY_5 && action == GLFW_PRESS) {
-    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/t-rex.obj"));
-    //     PAG::Renderer::getInstancia().creaModelos();
-    // }
-    // if (key == GLFW_KEY_6 && action == GLFW_PRESS) {
-    //     PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo("Modelos/vaca.obj"));
-    //     PAG::Renderer::getInstancia().creaModelos();
-    // }
-    //Borrar modelos con las teclas del teclado
-    if (key == GLFW_KEY_7 && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().borraModelo("Modelos/Ajax.obj");
-    }
-    if (key == GLFW_KEY_8 && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().borraModelo("Modelos/dado.obj");
-    }
-    if (key == GLFW_KEY_9 && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().borraModelo("Modelos/mandalorian,obj");
-    }
-    if (key == GLFW_KEY_0 && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().borraModelo("Modelos/panther.obj");
-    }
-    if (key == GLFW_KEY_MINUS && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().borraModelo("Modelos/t-rex.obj");
-    }
-    if (key == GLFW_KEY_EQUAL && action == GLFW_PRESS) {
-        PAG::Renderer::getInstancia().borraModelo("Modelos/vaca.obj");
+    //Borrar modelo seleccionado con tecla b
+    if(key== GLFW_KEY_B && action == GLFW_PRESS){
+        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().borraModelo(modelo);
+        std::vector<std::string> nombresModelos = PAG::Renderer::getInstancia().obtenerNombresModelos();
+        PAG::Gui::getInstancia().selectorModelo->setModelos(nombresModelos);
+        PAG::Gui::getInstancia().selectorModelo->setModeloSeleccionado(-1);
+        PAG::Gui::getInstancia().consola->NuevoMensaje("Modelo borrado");
     }
 
     //Flechas para mover el modelo 0 (TODO: Cambiar al modelo seleccionado)
     if(key== GLFW_KEY_LEFT && action == GLFW_PRESS){
-        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(-1.0f,0.0f,0.0f)));
+        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(-1.0f,0.0f,0.0f)));
     }
     if(key== GLFW_KEY_RIGHT && action == GLFW_PRESS){
-        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(1.0f,0.0f,0.0f)));
+        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(1.0f,0.0f,0.0f)));
     }
     if(key== GLFW_KEY_UP && action == GLFW_PRESS){
-        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.0f,1.0f,0.0f)));
+        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.0f,1.0f,0.0f)));
     }
     if(key== GLFW_KEY_DOWN && action == GLFW_PRESS){
-        PAG::Renderer::getInstancia().modelos[0]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.0f,-1.0f,0.0f)));
+        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.0f,-1.0f,0.0f)));
     }
 
     //Flechas para rotar el modelo 0 (TODO: Cambiar al modelo seleccionado)
@@ -156,6 +124,8 @@ void ComprobarArchivosModelos() {
         PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo(pathModelo));
         PAG::Renderer::getInstancia().creaModelos();
         PAG::Gui::getInstancia().ventanaArchivos->ClearPath();
+        std::vector<std::string> nombresModelos = PAG::Renderer::getInstancia().obtenerNombresModelos();
+        PAG::Gui::getInstancia().selectorModelo->setModelos(nombresModelos);
     }
 }
 

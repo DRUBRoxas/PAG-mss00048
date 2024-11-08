@@ -106,16 +106,12 @@ namespace PAG {
         return camara;
     }
 
-    void Renderer::borraModelo(std::string ruta) {
-    auto it = std::remove_if(modelos.begin(), modelos.end(), [&ruta](Modelo* modelo) {
-        if (modelo->nombreModelo == ruta) {
-            delete modelo;
-            return true;
+    void Renderer::borraModelo(int posicion) {
+        if (posicion >= 0 && posicion < modelos.size()) {
+            delete modelos[posicion];
+            modelos.erase(modelos.begin() + posicion);
         }
-        return false;
-    });
-    modelos.erase(it, modelos.end());
-}
+    }
     // Función para crear múltiples modelos
     void Renderer::creaModelos() {
         int posicion=modelos.size()-1;
@@ -148,4 +144,13 @@ namespace PAG {
                 glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(GLuint), indices.data(), GL_STATIC_DRAW);
             }
         }
+    // Método para obtener los nombres de los modelos
+    std::vector<std::string> Renderer::obtenerNombresModelos() {
+        std::vector<std::string> nombres;
+        for (Modelo* modelo : modelos) {
+            nombres.push_back(modelo->nombreModelo);
+        }
+        return nombres;
+    }
+
     }// PAG

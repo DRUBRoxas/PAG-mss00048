@@ -74,8 +74,9 @@ namespace PAG {
 
         Camera getCamara();
 
-        void borraModelo(std::string ruta);
+        void borraModelo(int posicion);
 
+        std::vector<std::string> obtenerNombresModelos();
         void creaModelos();
     };
 } // PAG
