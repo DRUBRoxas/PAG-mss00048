@@ -113,3 +113,5 @@ X: Escalar hacia abajo
 
 Se ha utilizado la biblioteca Assimp para cargar modelos, así como imfilebrowser para cargar los modelos desde el explorador de archivos.
 En el renderer ahora se pueden tener varios modelos cargados a la vez,eliminarlos, y se pueden transformar de manera independiente.
+![P6-UML.png](Assets%2FP6-UML.png)
+
