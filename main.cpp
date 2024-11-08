@@ -129,6 +129,18 @@ void ComprobarArchivosModelos() {
     }
 }
 
+void ComprobarBorradoModelo() {
+    int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloBorrar();
+    if(modelo!=-1){
+        PAG::Renderer::getInstancia().borraModelo(modelo);
+        std::vector<std::string> nombresModelos = PAG::Renderer::getInstancia().obtenerNombresModelos();
+        PAG::Gui::getInstancia().selectorModelo->setModelos(nombresModelos);
+        PAG::Gui::getInstancia().selectorModelo->setModeloSeleccionado(-1);
+        PAG::Gui::getInstancia().selectorModelo->setModeloBorrar(-1);
+        PAG::Gui::getInstancia().consola->NuevoMensaje("Modelo borrado");
+    }
+}
+
 int main() {
 
     /*
@@ -196,6 +208,7 @@ int main() {
         PAG::Renderer::getInstancia().refrescar();
         PAG::Gui::getInstancia().RefrescarFrame();
         ComprobarArchivosModelos();
+        ComprobarBorradoModelo();
         // Hace el SWAP del doble buffer
         glfwSwapBuffers(window);
 
