@@ -16,7 +16,6 @@
 
 namespace PAG {
     class Shader;
-
     class Modelo {
 public:
     std::string nombreModelo;
@@ -25,13 +24,9 @@ public:
     Modelo(std::string ruta);
     void Dibujar(Shader &shader);
     ~Modelo();
-
     GLuint* get_id_vao();
-
     GLuint* get_id_vbo();
-
     GLuint* get_id_ibo();
-
     std::vector<GLfloat> getVertices();
     std::vector<GLuint> getIndices();
     std::vector<GLfloat> getColores();
@@ -46,7 +41,6 @@ private:
     GLuint idIBO = 0; // Identificador del index buffer object
     glm::mat4 transformacion = glm::mat4(1.0f);
     void cargarModelo(std::string ruta);
-
 };
 
 } // PAG

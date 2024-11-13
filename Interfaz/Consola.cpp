@@ -16,10 +16,6 @@ namespace PAG {
         ImGui::SetNextWindowPos(ImVec2(x, y), ImGuiCond_Once);
     }
 
-    void Consola::SetSize(int x, int y) {
-        ImGui::SetNextWindowSize(ImVec2(x, y), ImGuiCond_Once);
-    }
-
     void Consola::SetWindowFontScale(float scale) {
         ImGui::SetWindowFontScale(scale);
     }
@@ -28,7 +24,7 @@ namespace PAG {
         SetPosicion(10,10);
         if(ImGui::Begin("Consola")) {
             //Ventana Desplegada
-            Consola::SetWindowFontScale(1.0f);
+            SetWindowFontScale(1.0f);
             for(int i=0; i<mensajes.size(); i++) {
                 ImGui::TextUnformatted(mensajes[i].c_str());
             }
@@ -43,7 +39,7 @@ namespace PAG {
     }
 
     void Consola::NuevoMensaje(std::string mensaje) {
-        if(mensajes.size()>100) {
+        if(mensajes.size()>500) {
             mensajes.erase(mensajes.begin());
         }
         mensajes.push_back(mensaje);

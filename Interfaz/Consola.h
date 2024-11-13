@@ -19,8 +19,6 @@ public:
     ~Consola();
     void SetPosicion(int x, int y);
 
-    void SetSize(int x, int y);
-
     void SetWindowFontScale(float scale);
 
     void RefrescarConsola();
