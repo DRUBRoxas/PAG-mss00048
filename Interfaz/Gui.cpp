@@ -9,7 +9,6 @@ namespace PAG {
     Gui::Gui() {
         consola = new Consola;
         colorPicker = new ColorPicker;
-        textBox = new TextBox;
         selectorMovimiento= new SelectorMovimiento;
         ventanaArchivos = new VentanaArchivos;
         selectorModelo = new SelectorModelo;
@@ -51,7 +50,6 @@ namespace PAG {
         // Se dibujan los controles de Dear ImGui
         consola->RefrescarConsola();
         colorPicker->RefrescarColorPicker();
-        textBox->RefrescarTextBox();
         selectorMovimiento->RefrescarSelector();
         ventanaArchivos->RefrescarVentanaArchivos();
         selectorModelo->RefrescarSelectorModelo();

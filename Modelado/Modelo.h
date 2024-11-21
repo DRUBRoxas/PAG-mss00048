@@ -13,16 +13,19 @@
 #include <glad/glad.h>
 #include <GL/gl.h>
 #include <glm/glm.hpp>
-
+#include "../Renderizado/ProgramShader.h"
 namespace PAG {
-    class Shader;
     class Modelo {
 public:
     std::string nombreModelo;
     Assimp::Importer importador;
     aiMesh *malla=nullptr;
+    ProgramShader* shader_program;
     Modelo(std::string ruta);
     void Dibujar(Shader &shader);
+
+    Modelo(std::string ruta, std::string nombreShader);
+
     ~Modelo();
     GLuint* get_id_vao();
     GLuint* get_id_vbo();
@@ -30,9 +33,14 @@ public:
     std::vector<GLfloat> getVertices();
     std::vector<GLuint> getIndices();
     std::vector<GLfloat> getColores();
+
+    void enlazarShaderProgram(std::string nombreArchivo);
+
     // Nueva función para obtener y modificar la matriz de transformación
     glm::mat4 getTransformacion() const { return transformacion; }
     void setTransformacion(const glm::mat4& t) { transformacion = t; }
+
+    ProgramShader* getShaderProgram() { return shader_program; }
 
 private:
     std::string directorio;

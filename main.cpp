@@ -2,14 +2,9 @@
 // IMPORTANTE: El include de GLAD debe estar siempre ANTES de el de GLFW
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <glm/vec3.hpp>
 
-#include "Camera.h"
-#include "Camera.h"
 #include "Interfaz/Gui.h"
 #include "Renderizado/Renderer.h"
-#include "Interfaz/imgui/imgui.h"
-#include "Modelado/Modelo.h"
 
 //Constantes
 // Esta función callback será llamada cuando GLFW produzca algún error
@@ -44,63 +39,6 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
-
-    //Flechas para mover el modelo Seleccionado en el gui
-    if(key== GLFW_KEY_LEFT && action == GLFW_PRESS){
-        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(-1.0f,0.0f,0.0f)));
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Moviendo modelo a la izquierda");
-    }
-    if(key== GLFW_KEY_RIGHT && action == GLFW_PRESS){
-        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(1.0f,0.0f,0.0f)));
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Moviendo modelo a la derecha");
-    }
-    if(key== GLFW_KEY_UP && action == GLFW_PRESS){
-        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.0f,1.0f,0.0f)));
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Moviendo modelo arriba");
-    }
-    if(key== GLFW_KEY_DOWN && action == GLFW_PRESS){
-        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::translate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.0f,-1.0f,0.0f)));
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Moviendo modelo abajo");
-    }
-
-    //Flechas para rotar el modelo Seleccionado
-    //TODO: Comprobar rotacion con Angel Luis, esto creo que está mal
-    if(key== GLFW_KEY_A && action == GLFW_PRESS){
-        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Rotando modelo a la izquierda");
-        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(10.0f),glm::vec3(0.0f,0.0f,1.0f)));
-    }
-    if(key== GLFW_KEY_D && action == GLFW_PRESS){
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Rotando modelo a la derecha");
-        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(-10.0f),glm::vec3(0.0f,0.0f,1.0f)));
-    }
-    if(key== GLFW_KEY_W && action == GLFW_PRESS){
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Rotando modelo arriba");
-        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(10.0f),glm::vec3(1.0f,0.0f,0.0f)));
-    }
-    if(key== GLFW_KEY_S && action == GLFW_PRESS){
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Rotando modelo abajo");
-        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::rotate(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::radians(-10.0f),glm::vec3(1.0f,0.0f,0.0f)));
-    }
-
-    //Flechas para escalar el modelo Seleccionado
-    if(key== GLFW_KEY_Z && action == GLFW_PRESS){
-        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Escalando modelo");
-        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::scale(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(1.1f,1.1f,1.1f)));
-    }
-    if(key== GLFW_KEY_X && action == GLFW_PRESS){
-        PAG::Gui::getInstancia().consola->NuevoMensaje("Escalando modelo");
-        int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(glm::scale(PAG::Renderer::getInstancia().modelos[0]->getTransformacion(),glm::vec3(0.9f,0.9f,0.9f)));
-    }
 }
 
 // Esta función callback será llamada cada vez que se pulse algún botón
@@ -126,13 +64,18 @@ void scroll_callback(GLFWwindow *window, double xoffset, double yoffset) {
 }
 
 void ComprobarArchivosModelos() {
-    std::string pathModelo=PAG::Gui::getInstancia().ventanaArchivos->getPath();
-    if(!pathModelo.empty()){
-        PAG::Renderer::getInstancia().modelos.push_back(new PAG::Modelo(pathModelo));
-        PAG::Renderer::getInstancia().creaModelos();
-        PAG::Gui::getInstancia().ventanaArchivos->ClearPath();
-        std::vector<std::string> nombresModelos = PAG::Renderer::getInstancia().obtenerNombresModelos();
-        PAG::Gui::getInstancia().selectorModelo->setModelos(nombresModelos);
+    if(PAG::Gui::getInstancia().ventanaArchivos->cambiosRealizados) {
+        PAG::Gui::getInstancia().ventanaArchivos->cambiosRealizados = false;
+        std::string pathModelo=PAG::Gui::getInstancia().ventanaArchivos->getPath();
+        std::string shaders=PAG::Gui::getInstancia().ventanaArchivos->getShaderName();
+        if(!pathModelo.empty() && !shaders.empty()){
+            PAG::Modelo *modelo = new PAG::Modelo(pathModelo, shaders);
+            PAG::Renderer::getInstancia().modelos.push_back(modelo);
+            PAG::Renderer::getInstancia().creaModelos();
+            PAG::Gui::getInstancia().ventanaArchivos->ClearPath();
+            std::vector<std::string> nombresModelos = PAG::Renderer::getInstancia().obtenerNombresModelos();
+            PAG::Gui::getInstancia().selectorModelo->setModelos(nombresModelos);
+        }
     }
 }
 
@@ -152,18 +95,10 @@ void ComprobarTransformacionesModelo() {
     if(PAG::Gui::getInstancia().transformadorModelo->transformacionAplicada) {
         glm::mat4 transformacion = PAG::Gui::getInstancia().transformadorModelo->getTransformacion();
         int modelo = PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
-        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(transformacion);
-    }
+        PAG::Renderer::getInstancia().modelos[modelo]->setTransformacion(transformacion);}
 }
 
 int main() {
-
-    /*
-     *TODO:
-     * Cambiar el uso de los movimientos de la cámara fuera de la interfaz
-     * Crear un sistema de carga de modelos
-     *
-     */
     PAG::Gui::getInstancia().asignarCamara(&PAG::Renderer::getInstancia().camara);
     PAG::Gui::getInstancia().consola->NuevoMensaje("Starting Application PAG-Prueba 01");
     //-Este callback hay que registrarlo ANTES de llamar a glfwInit
@@ -217,7 +152,7 @@ int main() {
     PAG::Renderer::getInstancia().inicializaOpenGL();
     PAG::Gui::getInstancia().StartGui(window);
     //Esto lo hago para que se cargue el shader por defecto y no complicarme la cabeza
-    PAG::Renderer::getInstancia().enlazarShaderProgram("pag03");
+//    PAG::Renderer::getInstancia().enlazarShaderProgram("pag03");
     // Ciclo de eventos de la aplicación.
     while (!glfwWindowShouldClose(window)) {
         // Borra los buffers (color y profundidad)

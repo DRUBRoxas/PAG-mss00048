@@ -20,8 +20,6 @@ add_executable(PruebaGraficas main.cpp
         Interfaz/ColorPicker.h
         Renderizado/ProgramShader.cpp
         Renderizado/ProgramShader.h
-        Interfaz/TextBox.cpp
-        Interfaz/TextBox.h
         Renderizado/Shader.cpp
         Renderizado/Shader.h
         Camera.cpp

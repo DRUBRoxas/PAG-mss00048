@@ -5,18 +5,17 @@
 #ifndef GUI_H
 #define GUI_H
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
-#include "imgui/imgui_impl_opengl3_loader.h"
-
-#include <GLFW/glfw3.h>
-
+// #include "imgui/imgui.h"
+// #include "imgui/imgui_impl_glfw.h"
+// #include "imgui/imgui_impl_opengl3.h"
+// #include "imgui/imgui_impl_opengl3_loader.h"
+//
+// #include <GLFW/glfw3.h>
+//
 #include "ColorPicker.h"
 #include "Consola.h"
 #include "SelectorModelo.h"
 #include "SelectorMovimiento.h"
-#include "TextBox.h"
 #include "TransformadorModelo.h"
 #include "VentanaArchivos.h"
 
@@ -31,7 +30,6 @@ public:
     SelectorMovimiento* selectorMovimiento;
     Consola* consola;
     ColorPicker* colorPicker;
-    TextBox* textBox;
     VentanaArchivos* ventanaArchivos;
     SelectorModelo* selectorModelo;
     TransformadorModelo* transformadorModelo;

@@ -4,12 +4,12 @@
 
 #ifndef VENTANAARCHIVOS_H
 #define VENTANAARCHIVOS_H
-#include "imgui/imgui.h"
 #include "../imfilebrowser.h"
 #include <string>
 namespace PAG {
     class VentanaArchivos {
     public:
+        bool cambiosRealizados=false;
         VentanaArchivos();
         ~VentanaArchivos();
 
@@ -18,8 +18,10 @@ namespace PAG {
         std::string getPath();
 
         void ClearPath();
-
+        std::string getShaderName();
     private:
+        bool _buttonPressed;
+        std::string shaderName="";
         ImGui::FileBrowser fileDialog;
         std::string path="";
     };

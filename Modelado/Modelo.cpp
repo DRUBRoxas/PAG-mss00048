@@ -5,7 +5,9 @@
 #include "Modelo.h"
 
 namespace PAG {
-    Modelo::Modelo(std::string ruta) {
+    Modelo::Modelo(std::string ruta, std::string nombreShader) {
+        shader_program = new ProgramShader();
+        shader_program->ObtenShaders(nombreShader);
         //Guardar el nombre del modelo para su eliminación más adelante
         nombreModelo = ruta;
         cargarModelo(ruta);
@@ -19,6 +21,9 @@ namespace PAG {
         }
         if ( idVAO != 0 )
         { glDeleteVertexArrays ( 1, &idVAO );
+        }
+        if(shader_program!=nullptr){
+            delete shader_program;
         }
     }
 
@@ -73,6 +78,15 @@ namespace PAG {
         return colores;
     }
 
+    void Modelo::enlazarShaderProgram(std::string nombreArchivo) {
+        if (shader_program != nullptr) {
+            delete shader_program;
+            shader_program = nullptr;
+        }
+        shader_program = new ProgramShader();
+        shader_program->ObtenShaders(nombreArchivo);
+        //creaModelos();
+    }
 
 
 

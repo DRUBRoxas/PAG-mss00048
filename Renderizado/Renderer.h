@@ -4,20 +4,14 @@
 
 #ifndef RENDERER_H
 #define RENDERER_H
-#include <string>
-#include <glad/glad.h>
-#include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <glm/gtc/type_ptr.hpp>
-#include <glm/fwd.hpp>
-#include "../Modelado/Modelo.h"
-#include <assimp/mesh.h>
-#include <assimp/vector3.h>
 
+#include <string>
+#include <glm/glm.hpp>
+#include <vector>
 #include "ProgramShader.h"
 #include "../Camera.h"
+#include "../Modelado/Modelo.h"
+
 /**
  * Espacio de nombres para las prácticas de Programación de Aplicaciones
  * Gráficas
@@ -39,7 +33,7 @@ namespace PAG {
         std::string fuenteFS; // Código fuente del fragment shader
 
 
-        PAG::ProgramShader *shaderProgram; // Shader program
+        //PAG::ProgramShader *shaderProgram; // Shader program
         bool exito=false; // Para saber si se ha cargado correctamente el shader program
         static Renderer *instancia; ///< Instancia única de la clase
         Renderer();
