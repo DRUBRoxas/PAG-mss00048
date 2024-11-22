@@ -2,6 +2,9 @@
 // Created by Manuel on 03/11/2024.
 //
 
+#include <glad/glad.h>
+#include "assimp/postprocess.h"
+#include "assimp/scene.h"
 #include "Modelo.h"
 
 namespace PAG {
@@ -86,6 +89,22 @@ namespace PAG {
         shader_program = new ProgramShader();
         shader_program->ObtenShaders(nombreArchivo);
         //creaModelos();
+    }
+
+    TipoVisualizacion Modelo::getTipoVisualizacion() {
+        return tipoVisualizacion;
+    }
+
+    glm::vec4 Modelo::getColorDifuso() {
+        return colorDifuso;
+    }
+
+    void Modelo::cambiaModoVisualizacion() {
+        if (tipoVisualizacion == ALAMBRE) {
+            tipoVisualizacion = RELLENO;
+        } else {
+            tipoVisualizacion = ALAMBRE;
+        }
     }
 
 

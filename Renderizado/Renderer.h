@@ -8,7 +8,6 @@
 #include <string>
 #include <glm/glm.hpp>
 #include <vector>
-#include "ProgramShader.h"
 #include "../Camera.h"
 #include "../Modelado/Modelo.h"
 
@@ -49,6 +48,9 @@ namespace PAG {
         Camera camara; // Cámara de la escena
         std::vector<Modelo*> modelos;
         virtual ~Renderer();
+
+        void cambiaModo(int modelo);
+
         static Renderer &getInstancia();
         void refrescar();
         void ResizeVentana(int ancho, int alto);

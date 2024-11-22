@@ -115,3 +115,31 @@ Se ha utilizado la biblioteca Assimp para cargar modelos, así como imfilebrowse
 En el renderer ahora se pueden tener varios modelos cargados a la vez,eliminarlos, y se pueden transformar de manera independiente.
 ![P6-UML.png](Assets%2FP6-UML.png)
 
+# Practica 7
+
+1. **Añadido tipo de visualización al modelo**
+    - La clase `Modelo` ahora incluye un atributo que representa el tipo de visualización utilizado. Esto permite cambiar dinámicamente el modo en que se renderiza cada modelo.
+
+2. **Nuevo enumerador `Visualización`**
+    - Se ha creado un `enum` llamado `Visualización` que define los posibles modos de visualización. Este enumerador facilita la gestión y la selección de los distintos modos de renderizado.
+
+3. **Cambios en los shaders**
+    - Se han modificado los shaders para incluir la lógica necesaria para implementar los diferentes modos de visualización.
+
+4. **Corrección de problemas de dependencias (`#include`)**
+    - Se han solucionado conflictos y redundancias en las dependencias. Esto mejora el tiempo de compilación y reduce posibles errores derivados de duplicaciones o referencias circulares.
+
+5. **Cambio en la gestión de shaders para modelos**
+    - La lógica de renderizado ha sido modificada.
+        - Ahora, cada modelo gestiona su propio Shader asociado en lugar de utilizar un único Shader compartido para todos los modelos de la escena.
+        - Esto permite que cada modelo tenga su propio modo de visualización, sin afectar a los demás modelos.
+6. **Incorporación de subrutinas y lógica de cambio de visualización**
+    - Se han añadido las subrutinas necesarias en los shaders para implementar los modos de visualización definidos en el enumerador.
+    - Además, se ha desarrollado la lógica para gestionar el cambio dinámico de modos de visualización desde la aplicación, 
+   
+7. **Botón para cambiar el modo de visualización en el selector de modelos**
+    - Se ha añadido un botón al componente de interfaz gráfica `SelectorModelo`, que permite alternar entre los diferentes modos de visualización de un modelo seleccionado.
+    - Para gestionar los cambios de manera eficiente, se ha implementado un sistema inspirado en el patrón Observador, asegurando que cualquier cambio en el modo de visualización se propague automáticamente a los elementos relevantes de la aplicación.
+
+El UML ha sido modificado para dejar solo lo relevante a esta práctica, ya que se quedaba un UML demasiado grande.
+![P7-UML.png](Assets/UML%20P7.png)

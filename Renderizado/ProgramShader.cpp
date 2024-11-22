@@ -1,8 +1,11 @@
 //
 // Created by Manuel on 07/10/2024.
 //
-
+#include <stdexcept>
+#include <glad/glad.h>
 #include "ProgramShader.h"
+
+#include "Shader.h"
 
 
 namespace PAG {

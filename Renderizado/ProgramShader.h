@@ -5,12 +5,7 @@
 #ifndef PROGRAMSHADER_H
 #define PROGRAMSHADER_H
 #include <string>
-#include <utility>
-#include <glad/glad.h>
-#include <fstream>
-#include <sstream>
-#include <stdexcept>
-#include "Shader.h"
+#include <GL/gl.h>
 namespace PAG {
 
 class ProgramShader {

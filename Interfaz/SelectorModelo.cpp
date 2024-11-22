@@ -33,6 +33,9 @@ namespace PAG {
             if(ImGui::Button("Borrar Modelo")) {
                 modeloBorrar=modeloSeleccionado;
             }
+            if (ImGui::Button("Cambiar modo Visualización")) {
+                modeloCambiaModo=modeloSeleccionado;
+            }
             ImGui::End();
         }
 
@@ -55,6 +58,13 @@ namespace PAG {
 
     void SelectorModelo::setModeloBorrar(int modelo) {
         modeloBorrar=modelo;
+    }
+
+   int SelectorModelo::getModeloCambioModo() {
+       return modeloCambiaModo;
+   }
+    void SelectorModelo::setModeloCambiar(int i) {
+        modeloCambiaModo=i;
     }
 
 } // PAG

@@ -5,15 +5,13 @@
 #ifndef MODELADO_H
 #define MODELADO_H
 #include <string>
-#include <./assimp/Importer.hpp>
-#include <./assimp/scene.h>
-#include <./assimp/postprocess.h>
-#include <iostream>
 #include <vector>
-#include <glad/glad.h>
-#include <GL/gl.h>
-#include <glm/glm.hpp>
+#include "assimp/Importer.hpp"
+#include "assimp/mesh.h"
+#include "glm/glm.hpp"
+#include "Visualizacion.h"
 #include "../Renderizado/ProgramShader.h"
+#include "../Renderizado/Shader.h"
 namespace PAG {
     class Modelo {
 public:
@@ -23,6 +21,12 @@ public:
     ProgramShader* shader_program;
     Modelo(std::string ruta);
     void Dibujar(Shader &shader);
+
+    TipoVisualizacion getTipoVisualizacion();
+
+    glm::vec4 getColorDifuso();
+
+    void cambiaModoVisualizacion();
 
     Modelo(std::string ruta, std::string nombreShader);
 
@@ -49,6 +53,14 @@ private:
     GLuint idIBO = 0; // Identificador del index buffer object
     glm::mat4 transformacion = glm::mat4(1.0f);
     void cargarModelo(std::string ruta);
+
+    // Tipo de visualización
+    TipoVisualizacion tipoVisualizacion = ALAMBRE;
+    // Materiales
+    glm::vec4 colorAmbiental;
+    glm::vec4 colorDifuso=glm::vec4(0.5f, 0.3f, 0.1f, 1.0f);
+    glm::vec4 colorEspecular;
+    glm::vec4 exponeneteEspecular;
 };
 
 } // PAG

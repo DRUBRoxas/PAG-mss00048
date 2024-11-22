@@ -91,6 +91,18 @@ void ComprobarBorradoModelo() {
     }
 }
 
+void ComprobarCambioModelo() {
+    int modelo=PAG::Gui::getInstancia().selectorModelo->getModeloCambioModo();
+    if(modelo!=-1){
+        PAG::Renderer::getInstancia().cambiaModo(modelo);
+        std::vector<std::string> nombresModelos = PAG::Renderer::getInstancia().obtenerNombresModelos();
+        PAG::Gui::getInstancia().selectorModelo->setModelos(nombresModelos);
+        PAG::Gui::getInstancia().selectorModelo->setModeloSeleccionado(-1);
+        PAG::Gui::getInstancia().selectorModelo->setModeloCambiar(-1);
+        PAG::Gui::getInstancia().consola->NuevoMensaje("Visualización de Modelo Cambiado");
+    }
+}
+
 void ComprobarTransformacionesModelo() {
     if(PAG::Gui::getInstancia().transformadorModelo->transformacionAplicada) {
         glm::mat4 transformacion = PAG::Gui::getInstancia().transformadorModelo->getTransformacion();
@@ -162,7 +174,7 @@ int main() {
         ComprobarArchivosModelos();
         ComprobarBorradoModelo();
         ComprobarTransformacionesModelo();
-
+        ComprobarCambioModelo();
 
         glfwSwapBuffers(window);
 

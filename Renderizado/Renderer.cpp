@@ -1,7 +1,7 @@
+#include <glad/glad.h>
 #include "Renderer.h"
-
+#include <iostream>
 #include <glm/gtc/type_ptr.hpp>
-
 namespace PAG {
     Renderer *Renderer::instancia = nullptr;
 
@@ -32,13 +32,31 @@ namespace PAG {
 
     // Renderer.cpp
 
+    void setSubroutine(GLuint shaderProgram, const std::string& subroutineName, GLenum shaderType) {
+        GLuint subroutineIndex = glGetSubroutineIndex(shaderProgram, shaderType, subroutineName.c_str());
+        glUniformSubroutinesuiv(shaderType, 1, &subroutineIndex);
+    }
+
     void Renderer::refrescar() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         for (Modelo *modelo: modelos) {
             if (modelo && modelo->get_id_vao() && modelo->get_id_ibo()) {
                 if (modelo->getShaderProgram() != nullptr) {
+                    bool modoAlambre = false;
+                    if(modelo->getTipoVisualizacion() == RELLENO) {
+                        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                    } else if (modelo->getTipoVisualizacion() == ALAMBRE) {
+                        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                        modoAlambre = true;
+                    }
                     glUseProgram(modelo->getShaderProgram()->getIdSP());
+
+                    if(modoAlambre) {
+                        setSubroutine(modelo->getShaderProgram()->getIdSP(), "colorRojo", GL_FRAGMENT_SHADER);
+                    } else {
+                        setSubroutine(modelo->getShaderProgram()->getIdSP(), "colorDifuso", GL_FRAGMENT_SHADER);
+                        glUniform4fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "kD"), 1, glm::value_ptr(modelo->getColorDifuso()));
+                    }
                     // Crear la matriz MVP para el modelo actual
                     glm::mat4 mvp = camara.getProjectionMatrix() * camara.getViewMatrix() * modelo->getTransformacion();
                     glBindVertexArray(*modelo->get_id_vao());
@@ -148,4 +166,10 @@ namespace PAG {
         }
         return nombres;
     }
+
+    void Renderer::cambiaModo(int modelo) {
+        modelos[modelo]->cambiaModoVisualizacion();
+    }
+
+
 } // PAG

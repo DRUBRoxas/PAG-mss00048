@@ -1,9 +1,10 @@
 //
 // Created by Manuel on 11/10/2024.
 //
+#include <glad/glad.h>
+
 
 #include "Shader.h"
-
 #include <fstream>
 #include <sstream>
 
