@@ -24,27 +24,32 @@ public:
 
     TipoVisualizacion getTipoVisualizacion();
 
-    glm::vec4 getColorDifuso();
 
     void cambiaModoVisualizacion();
 
     Modelo(std::string ruta, std::string nombreShader);
 
     ~Modelo();
+
+    //Getters
     GLuint* get_id_vao();
     GLuint* get_id_vbo();
     GLuint* get_id_ibo();
     std::vector<GLfloat> getVertices();
     std::vector<GLuint> getIndices();
     std::vector<GLfloat> getColores();
+    glm::vec3 getColorAmbiental();
+    glm::vec3 getColorDifuso();
+    glm::vec3 getColorEspecular();
+    GLfloat getShininess();
+    glm::mat4 getTransformacion() const { return transformacion; }
+    ProgramShader* getShaderProgram() { return shader_program; }
 
     void enlazarShaderProgram(std::string nombreArchivo);
 
-    // Nueva función para obtener y modificar la matriz de transformación
-    glm::mat4 getTransformacion() const { return transformacion; }
+    // Setters
     void setTransformacion(const glm::mat4& t) { transformacion = t; }
 
-    ProgramShader* getShaderProgram() { return shader_program; }
 
 private:
     std::string directorio;
@@ -55,12 +60,12 @@ private:
     void cargarModelo(std::string ruta);
 
     // Tipo de visualización
-    TipoVisualizacion tipoVisualizacion = ALAMBRE;
+    TipoVisualizacion tipoVisualizacion = RELLENO;
     // Materiales
-    glm::vec4 colorAmbiental;
-    glm::vec4 colorDifuso=glm::vec4(0.5f, 0.3f, 0.1f, 1.0f);
-    glm::vec4 colorEspecular;
-    glm::vec4 exponeneteEspecular;
+    glm::vec3 colorAmbiental=glm::vec3(0.0f, 0.0f, 1.0f);
+    glm::vec3 colorDifuso=glm::vec3(0.5f, 0.3f, 0.1f);
+    glm::vec3 colorEspecular=glm::vec3(0.5f, 0.5f, 0.5f);
+    GLfloat shininess=2.0f;
 };
 
 } // PAG

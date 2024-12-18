@@ -37,6 +37,8 @@ add_executable(PruebaGraficas main.cpp
         Interfaz/TransformadorModelo.h
         Modelado/Visualizacion.h
         glad/src/glad.c
+        Renderizado/Luz.cpp
+        Renderizado/Luz.h
 )
 link_directories("./assimp/lib")
 target_link_libraries(PruebaGraficas glfw "-static")

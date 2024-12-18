@@ -95,7 +95,7 @@ namespace PAG {
         return tipoVisualizacion;
     }
 
-    glm::vec4 Modelo::getColorDifuso() {
+    glm::vec3 Modelo::getColorDifuso() {
         return colorDifuso;
     }
 
@@ -107,6 +107,17 @@ namespace PAG {
         }
     }
 
+    glm::vec3 Modelo::getColorAmbiental() {
+        return colorAmbiental;
+    }
+
+    GLfloat Modelo::getShininess() {
+        return shininess;
+    }
+
+    glm::vec3 Modelo::getColorEspecular() {
+        return colorEspecular;
+    }
 
 
 } // PAG

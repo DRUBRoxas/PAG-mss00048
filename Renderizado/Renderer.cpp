@@ -2,12 +2,21 @@
 #include "Renderer.h"
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
+
 namespace PAG {
     Renderer *Renderer::instancia = nullptr;
 
     // Constructor por defecto
     Renderer::Renderer() {
         camara = Camera();
+        luces.push_back(Luz(TipoLuz::PUNTUAL));
+        luces.push_back(Luz(TipoLuz::AMBIENTE));
+        luces.push_back(Luz(TipoLuz::DIRECCIONAL));
+        luces.push_back(Luz(TipoLuz::FOCO));
+        luces[0].inicializarPuntual(glm::vec3(0.5f, 0.3f, 0.1f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f,1.0f,3.0f));
+        luces[1].inicializarAmbiente(glm::vec3(0.0f, 0.0f, 1.0f));
+        luces[2].inicializarDireccional(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.5f, 0.3f, 0.1f), glm::vec3(0.5f, 0.5f, 0.5f));
+        luces[3].inicializarFoco(glm::vec3(1.0f,1.0f,3.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.5f, 0.3f, 0.1f), glm::vec3(0.5f, 0.5f, 0.5f), 0.5f, 2.0f);
     }
 
     // Destructor
@@ -32,7 +41,7 @@ namespace PAG {
 
     // Renderer.cpp
 
-    void setSubroutine(GLuint shaderProgram, const std::string& subroutineName, GLenum shaderType) {
+    void setSubroutine(GLuint shaderProgram, const std::string &subroutineName, GLenum shaderType) {
         GLuint subroutineIndex = glGetSubroutineIndex(shaderProgram, shaderType, subroutineName.c_str());
         glUniformSubroutinesuiv(shaderType, 1, &subroutineIndex);
     }
@@ -40,32 +49,102 @@ namespace PAG {
     void Renderer::refrescar() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         for (Modelo *modelo: modelos) {
-            if (modelo && modelo->get_id_vao() && modelo->get_id_ibo()) {
-                if (modelo->getShaderProgram() != nullptr) {
-                    bool modoAlambre = false;
-                    if(modelo->getTipoVisualizacion() == RELLENO) {
-                        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-                    } else if (modelo->getTipoVisualizacion() == ALAMBRE) {
-                        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                        modoAlambre = true;
-                    }
-                    glUseProgram(modelo->getShaderProgram()->getIdSP());
+            for (int i = 0; i < luces.size(); i++) {
+                if (i == 0) {
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+                } else {
+                    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+                }
+                if (modelo && modelo->get_id_vao() && modelo->get_id_ibo()) {
+                    if (modelo->getShaderProgram() != nullptr) {
+                        bool modoAlambre = false;
+                        if (modelo->getTipoVisualizacion() == RELLENO) {
+                            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+                        } else if (modelo->getTipoVisualizacion() == ALAMBRE) {
+                            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+                            modoAlambre = true;
+                        }
+                        glUseProgram(modelo->getShaderProgram()->getIdSP());
 
-                    if(modoAlambre) {
-                        setSubroutine(modelo->getShaderProgram()->getIdSP(), "colorRojo", GL_FRAGMENT_SHADER);
-                    } else {
-                        setSubroutine(modelo->getShaderProgram()->getIdSP(), "colorDifuso", GL_FRAGMENT_SHADER);
-                        glUniform4fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "kD"), 1, glm::value_ptr(modelo->getColorDifuso()));
+                        if (modoAlambre) {
+                            setSubroutine(modelo->getShaderProgram()->getIdSP(), "sinLuces", GL_FRAGMENT_SHADER);
+                        } else {
+                            switch (luces[i].getTipo()) {
+                                case TipoLuz::AMBIENTE:
+                                    setSubroutine(modelo->getShaderProgram()->getIdSP(), "ambiente", GL_FRAGMENT_SHADER);
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Ka"), 1,
+                                             glm::value_ptr(modelo->getColorAmbiental()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Ia"), 1,
+                                             glm::value_ptr(luces[i].getColorAmbiente()));
+                                break;
+                                case TipoLuz::PUNTUAL:
+                                    setSubroutine(modelo->getShaderProgram()->getIdSP(), "puntual", GL_FRAGMENT_SHADER);
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Kd"), 1,
+                                             glm::value_ptr(modelo->getColorDifuso()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Id"), 1,
+                                             glm::value_ptr(luces[i].getColorDifuso()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Ks"), 1,
+                                             glm::value_ptr(modelo->getColorEspecular()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Is"), 1,
+                                             glm::value_ptr(luces[i].getColorEspecular()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "lightPosition"), 1,
+                                             glm::value_ptr(luces[i].getPosicion()));
+                                glUniform1f(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "shininess"),
+                                    modelo->getShininess());
+                                    break;
+                                case TipoLuz::DIRECCIONAL:
+                                    setSubroutine(modelo->getShaderProgram()->getIdSP(), "puntual", GL_FRAGMENT_SHADER);
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Kd"), 1,
+                                             glm::value_ptr(modelo->getColorDifuso()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Id"), 1,
+                                             glm::value_ptr(luces[i].getColorDifuso()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Ks"), 1,
+                                             glm::value_ptr(modelo->getColorEspecular()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Is"), 1,
+                                             glm::value_ptr(luces[i].getColorEspecular()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "lightPosition"), 1,
+                                             glm::value_ptr(luces[i].getPosicion()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "lightDirection"), 1,
+                                             glm::value_ptr(luces[i].getDireccion()));
+                                glUniform1f(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "shininess"),
+                                    modelo->getShininess());
+                                    break;
+                                case TipoLuz::FOCO:
+                                    setSubroutine(modelo->getShaderProgram()->getIdSP(), "puntual", GL_FRAGMENT_SHADER);
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Kd"), 1,
+                                             glm::value_ptr(modelo->getColorDifuso()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Id"), 1,
+                                             glm::value_ptr(luces[i].getColorDifuso()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Ks"), 1,
+                                             glm::value_ptr(modelo->getColorEspecular()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "Is"), 1,
+                                             glm::value_ptr(luces[i].getColorEspecular()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "lightPosition"), 1,
+                                             glm::value_ptr(luces[i].getPosicion()));
+                                glUniform3fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "lightDirection"), 1,
+                                             glm::value_ptr(luces[i].getDireccion()));
+                                glUniform1f(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "shininess"),
+                                    modelo->getShininess());
+                                glUniform1f(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "lightDirection"),
+                                             luces[i].getGamma());
+                                    break;
+                            }
+                        }
+                        // Crear la matriz MVP para el modelo actual
+                        glm::mat4 mvp = camara.getProjectionMatrix() * camara.getViewMatrix() * modelo->
+                                        getTransformacion();
+                        glBindVertexArray(*modelo->get_id_vao());
+                        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *modelo->get_id_ibo());
+                        // Enviar la matriz MVP al shader
+                        glUniformMatrix4fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "matrizMVP"), 1,
+                                           GL_FALSE, glm::value_ptr(mvp));
+                        glUniformMatrix4fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "matrizTransformacion"), 1,
+                                           GL_FALSE, glm::value_ptr(modelo->getTransformacion()));
+                        glUniformMatrix4fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "mModelView"), 1,
+                                           GL_FALSE, glm::value_ptr(camara.getViewMatrix()));
+                        // Dibujar el modelo
+                        glDrawElements(GL_TRIANGLES, modelo->malla->mNumFaces * 3, GL_UNSIGNED_INT, nullptr);
                     }
-                    // Crear la matriz MVP para el modelo actual
-                    glm::mat4 mvp = camara.getProjectionMatrix() * camara.getViewMatrix() * modelo->getTransformacion();
-                    glBindVertexArray(*modelo->get_id_vao());
-                    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *modelo->get_id_ibo());
-                    // Enviar la matriz MVP al shader
-                    glUniformMatrix4fv(glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "matrizMVP"), 1,
-                                       GL_FALSE, glm::value_ptr(mvp));
-                    // Dibujar el modelo
-                    glDrawElements(GL_TRIANGLES, modelo->malla->mNumFaces * 3, GL_UNSIGNED_INT, nullptr);
                 }
             }
         }
@@ -107,6 +186,8 @@ namespace PAG {
         glClearColor(r, g, b, a);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_MULTISAMPLE);
+        glEnable(GL_BLEND);
+        glDepthFunc(GL_LEQUAL);
     }
 
     void Renderer::setCamera(const Camera &camera) {
@@ -170,6 +251,4 @@ namespace PAG {
     void Renderer::cambiaModo(int modelo) {
         modelos[modelo]->cambiaModoVisualizacion();
     }
-
-
 } // PAG

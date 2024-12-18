@@ -8,6 +8,8 @@
 #include <string>
 #include <glm/glm.hpp>
 #include <vector>
+
+#include "Luz.h"
 #include "../Camera.h"
 #include "../Modelado/Modelo.h"
 
@@ -42,6 +44,7 @@ namespace PAG {
         float g = 0.6;
         float b = 0.6;
         float a=1.0;
+        std::vector<Luz> luces;
 
 
     public:

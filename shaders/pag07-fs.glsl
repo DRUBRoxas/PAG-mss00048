@@ -8,6 +8,7 @@ subroutine vec4 calcularColor();
 subroutine uniform calcularColor metodoColorElegido;
 
 
+
 // Uniform para pasar un color desde el Renderer, contiene el color especular
 uniform vec4 kD;
 
