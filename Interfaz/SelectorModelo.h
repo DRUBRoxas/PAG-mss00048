@@ -9,32 +9,34 @@
 #include "imgui/imgui.h"
 
 namespace PAG {
+    class SelectorModelo {
+    private:
+        std::vector<std::string> modelos;
+        int modeloSeleccionado = 0;
+        int modeloBorrar = -1; //negativo para no cagarla
+        int modeloCambiaModo = -1; //negativo para no cagarla
 
-class SelectorModelo {
-private:
-    std::vector<std::string> modelos;
-    int modeloSeleccionado=0;
-    int modeloBorrar=-1; //negativo para no cagarla
-    int modeloCambiaModo=-1; //negativo para no cagarla
+    public:
+        void setModelos(std::vector<std::string> &nombres);
 
-public:
-    void setModelos(std::vector<std::string> &nombres);
-    void RefrescarSelectorModelo();
-    int getModeloSeleccionado();
-    int getModeloCambioModo();
-    void setModeloSeleccionado(int modelo);
+        void RefrescarSelectorModelo();
 
-    int getModeloBorrar();
+        int getModeloSeleccionado();
 
-    void setModeloBorrar(int modelo);
+        int getModeloCambioModo();
 
-    void setModeloCambiar(int i);
+        void setModeloSeleccionado(int modelo);
 
-    SelectorModelo();
-    ~SelectorModelo();
+        int getModeloBorrar();
 
-};
+        void setModeloBorrar(int modelo);
 
+        void setModeloCambiar(int i);
+
+        SelectorModelo();
+
+        ~SelectorModelo();
+    };
 } // PAG
 
 #endif //SELECTORMODELO_H

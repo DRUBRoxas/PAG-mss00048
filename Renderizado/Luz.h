@@ -1,6 +1,7 @@
 #ifndef LUZ_H
 #define LUZ_H
 
+#include <string>
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 namespace PAG {
@@ -14,6 +15,7 @@ namespace PAG {
     class Luz {
     private:
         TipoLuz tipo;
+        bool encendida=true;
         glm::vec3 colorAmbiente=glm::vec3(0.0f);
         glm::vec3 colorDifuso=glm::vec3(0.0f);
         glm::vec3 colorEspecular=glm::vec3(0.0f);
@@ -21,6 +23,7 @@ namespace PAG {
         glm::vec3 direccion=glm::vec3(0.0f);
         GLfloat gamma=0.0f;
         GLfloat exponente=0.0f;
+        std::string nombre;
 
     public:
         // Constructores
@@ -43,7 +46,9 @@ namespace PAG {
         void setDireccion(const glm::vec3& dir);
         void setGamma(GLfloat angulo);
         void setExponente(GLfloat exp);
-
+        void setEncendida(bool encendida);
+        void CambioModoEncendido();
+        void setNombre(const std::string& nombre);
         // Getters
         TipoLuz getTipo() const;
         const glm::vec3& getColorAmbiente() const;
@@ -53,6 +58,9 @@ namespace PAG {
         const glm::vec3& getDireccion() const;
         GLfloat getGamma() const;
         GLfloat getExponente() const;
+        bool isEncendida();
+        const std::string& getNombre() const;
+
     };
 }
 #endif

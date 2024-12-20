@@ -12,6 +12,7 @@ namespace PAG {
         selectorMovimiento= new SelectorMovimiento;
         ventanaArchivos = new VentanaArchivos;
         selectorModelo = new SelectorModelo;
+        selectorLuces = new SelectorLuces;
         transformadorModelo = new TransformadorModelo;
     }
 
@@ -54,6 +55,7 @@ namespace PAG {
         ventanaArchivos->RefrescarVentanaArchivos();
         selectorModelo->RefrescarSelectorModelo();
         transformadorModelo->RefrescarTransformadorModelo();
+        selectorLuces->RefrescarSelectorLuces();
         // Aquí va el dibujado de la escena con instrucciones OpenGL
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData ( ImGui::GetDrawData() );

@@ -38,11 +38,11 @@ namespace PAG {
             //Change content based on option selected
             if(current_item=="Zoom"){
                 if(ImGui::Button("Zoom In")){
-                    camera->Zoom(_ZOOM_SENSITIVITY_);
+                    camera->Zoom(_ZOOM_SENSITIVITY_*-1);
                 }
                 ImGui::SameLine();
                 if(ImGui::Button("Zoom Out")){
-                    camera->Zoom(_ZOOM_SENSITIVITY_ * -1);
+                    camera->Zoom(_ZOOM_SENSITIVITY_);
                 }
             }
 
@@ -110,12 +110,12 @@ namespace PAG {
 
                 // Botón para orbitar hacia arriba
                 if (ImGui::Button("Arriba")) {
-                    camera->Orbit(0, _ORBIT_SENSITIVITY_); // Rotar alrededor del eje X (vertical)
+                    camera->Orbit(0, _ORBIT_SENSITIVITY_ * -1); // Rotar alrededor del eje X (vertical)
                 }
                 ImGui::SameLine();
                 // Botón para orbitar hacia abajo
                 if (ImGui::Button("Abajo")) {
-                    camera->Orbit(0, _ORBIT_SENSITIVITY_ * -1); // Rotar hacia abajo alrededor del eje X
+                    camera->Orbit(0, _ORBIT_SENSITIVITY_); // Rotar hacia abajo alrededor del eje X
                 }
             }
             if (current_item=="Reset") {

@@ -67,15 +67,20 @@ void ComprobarArchivosModelos() {
     if(PAG::Gui::getInstancia().ventanaArchivos->cambiosRealizados) {
         PAG::Gui::getInstancia().ventanaArchivos->cambiosRealizados = false;
         std::string pathModelo=PAG::Gui::getInstancia().ventanaArchivos->getPath();
-        std::string shaders=PAG::Gui::getInstancia().ventanaArchivos->getShaderName();
-        if(!pathModelo.empty() && !shaders.empty()){
-            PAG::Modelo *modelo = new PAG::Modelo(pathModelo, shaders);
-            PAG::Renderer::getInstancia().modelos.push_back(modelo);
-            PAG::Renderer::getInstancia().creaModelos();
-            PAG::Gui::getInstancia().ventanaArchivos->ClearPath();
-            std::vector<std::string> nombresModelos = PAG::Renderer::getInstancia().obtenerNombresModelos();
-            PAG::Gui::getInstancia().selectorModelo->setModelos(nombresModelos);
+        try {
+            std::string shaders=PAG::Gui::getInstancia().ventanaArchivos->getShaderName();
+            if(!pathModelo.empty() && !shaders.empty()){
+                PAG::Modelo *modelo = new PAG::Modelo(pathModelo, shaders);
+                PAG::Renderer::getInstancia().modelos.push_back(modelo);
+                PAG::Renderer::getInstancia().creaModelos();
+                PAG::Gui::getInstancia().ventanaArchivos->ClearPath();
+                std::vector<std::string> nombresModelos = PAG::Renderer::getInstancia().obtenerNombresModelos();
+                PAG::Gui::getInstancia().selectorModelo->setModelos(nombresModelos);
+            }
+        } catch (std::exception &e) {
+            PAG::Gui::getInstancia().consola->NuevoMensaje("Error al cargar el shader: " + std::string(e.what()));
         }
+
     }
 }
 
@@ -100,6 +105,30 @@ void ComprobarCambioModelo() {
         PAG::Gui::getInstancia().selectorModelo->setModeloSeleccionado(-1);
         PAG::Gui::getInstancia().selectorModelo->setModeloCambiar(-1);
         PAG::Gui::getInstancia().consola->NuevoMensaje("Visualización de Modelo Cambiado");
+    }
+}
+
+void ComprobarBorradoLuz() {
+    int luz=PAG::Gui::getInstancia().selectorLuces->getLuzBorrar();
+    if(luz!=-1){
+        PAG::Renderer::getInstancia().borraLuz(luz);
+        std::vector<std::string> nombresLuz = PAG::Renderer::getInstancia().obtenerNombresLuces();
+        PAG::Gui::getInstancia().selectorLuces->setLuces(nombresLuz);
+        PAG::Gui::getInstancia().selectorLuces->setLuzSeleccionada(-1);
+        PAG::Gui::getInstancia().selectorLuces->setLuzBorrar(-1);
+        PAG::Gui::getInstancia().consola->NuevoMensaje("Luz borrado");
+    }
+}
+
+void ComprobarCambioLuz() {
+    int luz=PAG::Gui::getInstancia().selectorLuces->getLuzCambioModo();
+    if(luz!=-1){
+        PAG::Renderer::getInstancia().EnciendeLuz(luz);
+        std::vector<std::string> nombresLuz = PAG::Renderer::getInstancia().obtenerNombresLuces();
+        PAG::Gui::getInstancia().selectorLuces->setLuces(nombresLuz);
+        PAG::Gui::getInstancia().selectorLuces->setLuzSeleccionada(-1);
+        PAG::Gui::getInstancia().selectorLuces->setLuzCambiar(-1);
+        PAG::Gui::getInstancia().consola->NuevoMensaje("Luz Cambiada");
     }
 }
 
@@ -163,8 +192,7 @@ int main() {
     // Inicializamos OpenGL,imgui y cargamos los shaders
     PAG::Renderer::getInstancia().inicializaOpenGL();
     PAG::Gui::getInstancia().StartGui(window);
-    //Esto lo hago para que se cargue el shader por defecto y no complicarme la cabeza
-//    PAG::Renderer::getInstancia().enlazarShaderProgram("pag03");
+    PAG::Gui::getInstancia().selectorLuces->setLuces(PAG::Renderer::getInstancia().obtenerNombresLuces());
     // Ciclo de eventos de la aplicación.
     while (!glfwWindowShouldClose(window)) {
         // Borra los buffers (color y profundidad)
@@ -175,7 +203,8 @@ int main() {
         ComprobarBorradoModelo();
         ComprobarTransformacionesModelo();
         ComprobarCambioModelo();
-
+        ComprobarBorradoLuz();
+        ComprobarCambioLuz();
         glfwSwapBuffers(window);
 
         // Obtiene y organiza los eventos pendientes, tales como pulsaciones de

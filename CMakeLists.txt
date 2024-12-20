@@ -25,7 +25,6 @@ add_executable(PruebaGraficas main.cpp
         Camera.h
         Interfaz/SelectorMovimiento.cpp
         Interfaz/SelectorMovimiento.h
-        Interfaz/Movimiento.h
         Modelado/Modelo.cpp
         Modelado/Modelo.h
         Interfaz/VentanaArchivos.cpp
@@ -39,6 +38,8 @@ add_executable(PruebaGraficas main.cpp
         glad/src/glad.c
         Renderizado/Luz.cpp
         Renderizado/Luz.h
+        Interfaz/SelectorLuces.cpp
+        Interfaz/SelectorLuces.h
 )
 link_directories("./assimp/lib")
 target_link_libraries(PruebaGraficas glfw "-static")

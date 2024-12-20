@@ -54,6 +54,10 @@ namespace PAG {
 
         void cambiaModo(int modelo);
 
+        void EnciendeLuz(int modelo);
+
+        std::vector<std::string> obtenerNombresLuces();
+
         static Renderer &getInstancia();
         void refrescar();
         void ResizeVentana(int ancho, int alto);
@@ -74,6 +78,8 @@ namespace PAG {
         Camera getCamara();
 
         void borraModelo(int posicion);
+
+        void borraLuz(int posicion);
 
         std::vector<std::string> obtenerNombresModelos();
         void creaModelos();

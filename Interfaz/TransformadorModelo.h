@@ -17,11 +17,11 @@ namespace PAG {
         glm::mat4 getTransformacion();
         void resetTransformacion();
     private:
-        glm::mat4 transformacion;
-        glm::vec3 traslacion;
-        glm::vec3 ejeRotacion;
+        glm::mat4 transformacion=glm::mat4(0.0);
+        glm::vec3 traslacion=glm::vec3(0.0);
+        glm::vec3 ejeRotacion=glm::vec3(0.0);
         GLfloat anguloRotacion = 0.0;
-        glm::vec3 escalado;
+        glm::vec3 escalado=glm::vec3(1.0);
     };
 } // namespace PAG
 

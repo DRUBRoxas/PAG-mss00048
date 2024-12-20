@@ -3,7 +3,22 @@
 #include <glad/glad.h>
 
 namespace PAG {
-    Luz::Luz(TipoLuz tipo) : tipo(tipo) {}
+    Luz::Luz(TipoLuz tipo) : tipo(tipo) {
+        switch (tipo) {
+            case TipoLuz::AMBIENTE:
+                nombre = "Ambiente";
+            break;
+            case TipoLuz::PUNTUAL:
+                nombre = "Puntual";
+            break;
+            case TipoLuz::DIRECCIONAL:
+                nombre = "Direccional";
+            break;
+            case TipoLuz::FOCO:
+                nombre = "Foco";
+            break;
+        }
+    }
 
     Luz::Luz() {}
 
@@ -39,6 +54,9 @@ namespace PAG {
     void Luz::setDireccion(const glm::vec3& dir) { direccion = dir; }
     void Luz::setGamma(GLfloat angulo) { gamma = angulo; }
     void Luz::setExponente(GLfloat exp) { exponente = exp; }
+    void Luz::setEncendida(bool encendida) { this->encendida = encendida; }
+    void Luz::CambioModoEncendido() { encendida = !encendida; }
+    void Luz::setNombre(const std::string& nombre) { this->nombre = nombre; }
 
     TipoLuz Luz::getTipo() const { return tipo; }
     const glm::vec3& Luz::getColorAmbiente() const { return colorAmbiente; }
@@ -48,4 +66,7 @@ namespace PAG {
     const glm::vec3& Luz::getDireccion() const { return direccion; }
     GLfloat Luz::getGamma() const { return gamma; }
     GLfloat Luz::getExponente() const { return exponente; }
+    bool Luz::isEncendida() { return encendida; }
+    const std::string& Luz::getNombre() const { return nombre; }
+
 }

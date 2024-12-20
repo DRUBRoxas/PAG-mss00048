@@ -14,6 +14,9 @@ namespace PAG {
 
     void TransformadorModelo::RefrescarTransformadorModelo() {
         int modeloSeleccionado = PAG::Gui::getInstancia().selectorModelo->getModeloSeleccionado();
+        if (modeloSeleccionado < 0) {
+            return;
+        }
         if (ImGui::Begin("Transformador de modelo")) {
             if (modeloSeleccionado < 0) {
                 ImGui::Text("No hay ningún modelo seleccionado");

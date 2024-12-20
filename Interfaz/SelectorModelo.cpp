@@ -16,6 +16,9 @@ namespace PAG {
 
     void SelectorModelo::RefrescarSelectorModelo() {
         static int selected_item = -1;
+        if (modelos.empty()) {
+            return; // No mostrar la ventana si no hay modelos cargados
+        }
         if (ImGui::Begin("Selector de Modelos")) {
             if (ImGui::BeginCombo("Selecciona un Modelo", selected_item >= 0 ? modelos[selected_item].c_str() : "Selecciona un modelo")) {
                 for (int i = 0; i < modelos.size(); ++i) {
