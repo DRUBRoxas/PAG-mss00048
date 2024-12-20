@@ -8,6 +8,8 @@
 
 #include <iostream>
 
+#include "Gui.h"
+
 namespace PAG{
     VentanaArchivos::VentanaArchivos() {
         fileDialog.SetTitle("Seleccione un archivo");
@@ -39,7 +41,13 @@ namespace PAG{
             fileDialog.ClearSelected();
         }
         if(_buttonPressed) {
-            if(path.empty() && shaderName.empty()) {
+            if(path.empty() || shaderName.empty()) {
+                if (shaderName.empty()) {
+                    Gui::getInstancia().consola->NuevoMensaje("No se ha seleccionado un shader");
+                }
+                if (path.empty()) {
+                    Gui::getInstancia().consola->NuevoMensaje("No se ha seleccionado un archivo");
+                }
                 cambiosRealizados = false;
             } else {
                 cambiosRealizados = true;

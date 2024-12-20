@@ -25,29 +25,29 @@ namespace PAG {
                 ImGui::Text("Traslación");
                 ImGui::Text("Eje X:");
                 if (ImGui::Button("X+##TransX")) {
-                    traslacion.x += 1.0f;
+                    traslacion.x += 0.1f;
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("X-##TransX")) {
-                    traslacion.x -= 1.0f;
+                    traslacion.x -= 0.1f;
                 }
 
                 ImGui::Text("Eje Y:");
                 if (ImGui::Button("Y+##TransY")) {
-                    traslacion.y += 1.0f;
+                    traslacion.y += 0.1f;
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Y-##TransY")) {
-                    traslacion.y -= 1.0f;
+                    traslacion.y -= 0.1f;
                 }
 
                 ImGui::Text("Eje Z:");
                 if (ImGui::Button("Z+##TransZ")) {
-                    traslacion.z += 1.0f;
+                    traslacion.z += 0.1f;
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Z-##TransZ")) {
-                    traslacion.z -= 1.0f;
+                    traslacion.z -= 0.1f;
                 }
 
                 // Control de rotación con etiquetas únicas

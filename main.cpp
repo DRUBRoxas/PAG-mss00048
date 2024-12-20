@@ -102,7 +102,6 @@ void ComprobarCambioModelo() {
         PAG::Renderer::getInstancia().cambiaModo(modelo);
         std::vector<std::string> nombresModelos = PAG::Renderer::getInstancia().obtenerNombresModelos();
         PAG::Gui::getInstancia().selectorModelo->setModelos(nombresModelos);
-        PAG::Gui::getInstancia().selectorModelo->setModeloSeleccionado(-1);
         PAG::Gui::getInstancia().selectorModelo->setModeloCambiar(-1);
         PAG::Gui::getInstancia().consola->NuevoMensaje("Visualización de Modelo Cambiado");
     }
@@ -126,7 +125,6 @@ void ComprobarCambioLuz() {
         PAG::Renderer::getInstancia().EnciendeLuz(luz);
         std::vector<std::string> nombresLuz = PAG::Renderer::getInstancia().obtenerNombresLuces();
         PAG::Gui::getInstancia().selectorLuces->setLuces(nombresLuz);
-        PAG::Gui::getInstancia().selectorLuces->setLuzSeleccionada(-1);
         PAG::Gui::getInstancia().selectorLuces->setLuzCambiar(-1);
         PAG::Gui::getInstancia().consola->NuevoMensaje("Luz Cambiada");
     }

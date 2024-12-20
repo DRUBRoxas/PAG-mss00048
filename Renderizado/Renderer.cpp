@@ -18,8 +18,8 @@ namespace PAG {
         luces[1].inicializarAmbiente(glm::vec3(0.0f, 0.0f, 1.0f));
         luces[2].inicializarDireccional(glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.5f, 0.3f, 0.1f),
                                         glm::vec3(0.5f, 0.5f, 0.5f));
-        luces[3].inicializarFoco(glm::vec3(1.0f, 1.0f, 3.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.5f, 0.3f, 0.1f),
-                                 glm::vec3(0.5f, 0.5f, 0.5f), 0.5f, 2.0f);
+        luces[0].inicializarFoco(glm::vec3(0.0f, 3.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f),
+                                 glm::vec3(1.0f, 0.0f, 0.0f), 5.0f, 2.0f);
     }
 
     // Destructor
@@ -104,7 +104,7 @@ namespace PAG {
                                         glUniform3fv(
                                             glGetUniformLocation(modelo->getShaderProgram()->getIdSP(),
                                                                  "lightPosition"), 1,
-                                            glm::value_ptr(luces[i].getPosicion()));
+                                            glm::value_ptr(glm::vec4(luces[i].getPosicion(), 1.0f)*camara.getViewMatrix()));
                                         glUniform1f(
                                             glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "shininess"),
                                             modelo->getShininess());
@@ -126,12 +126,8 @@ namespace PAG {
                                             glm::value_ptr(luces[i].getColorEspecular()));
                                         glUniform3fv(
                                             glGetUniformLocation(modelo->getShaderProgram()->getIdSP(),
-                                                                 "lightPosition"), 1,
-                                            glm::value_ptr(luces[i].getPosicion()));
-                                        glUniform3fv(
-                                            glGetUniformLocation(modelo->getShaderProgram()->getIdSP(),
                                                                  "lightDirection"), 1,
-                                            glm::value_ptr(luces[i].getDireccion()));
+                                            glm::value_ptr(glm::vec4(luces[i].getDireccion(), 1.0f)*camara.getViewMatrix()));
                                         glUniform1f(
                                             glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "shininess"),
                                             modelo->getShininess());
@@ -154,17 +150,17 @@ namespace PAG {
                                         glUniform3fv(
                                             glGetUniformLocation(modelo->getShaderProgram()->getIdSP(),
                                                                  "lightPosition"), 1,
-                                            glm::value_ptr(luces[i].getPosicion()));
+                                            glm::value_ptr(camara.getViewMatrix()*glm::vec4(luces[i].getPosicion(), 1.0f)));
                                         glUniform3fv(
                                             glGetUniformLocation(modelo->getShaderProgram()->getIdSP(),
                                                                  "lightDirection"), 1,
-                                            glm::value_ptr(luces[i].getDireccion()));
+                                            glm::value_ptr(camara.getViewMatrix()*glm::vec4(luces[i].getDireccion(), 1.0f)));
                                         glUniform1f(
                                             glGetUniformLocation(modelo->getShaderProgram()->getIdSP(), "shininess"),
                                             modelo->getShininess());
                                         glUniform1f(
                                             glGetUniformLocation(modelo->getShaderProgram()->getIdSP(),
-                                                                 "lightDirection"),
+                                                                 "spotAngle"),
                                             luces[i].getGamma());
                                         break;
                                 }
